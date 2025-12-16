@@ -1,13 +1,13 @@
 import express from "express";
 import cors from "cors";
-import connectDB from "../config/db.js";
-import authRoutes from "../routes/authRoutes.js";
-import incomeRoutes from "../routes/incomeRoutes.js";
-import expenseRoutes from "../routes/expenseRoutes.js";
-import monthlyBalanceRoutes from "../routes/monthlyBalanceRoutes.js";
-import investmentPlannerRoutes from "../routes/investmentPlannerRoutes.js";
-import dotenvConfig from "../utils/dotenvConfig.js";
-import financialHealthRoutes from "../routes/financialHealthRoutes.js";
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import incomeRoutes from "./routes/incomeRoutes.js";
+import expenseRoutes from "./routes/expenseRoutes.js";
+import monthlyBalanceRoutes from "./routes/monthlyBalanceRoutes.js";
+import investmentPlannerRoutes from "./routes/investmentPlannerRoutes.js";
+import dotenvConfig from "./utils/dotenvConfig.js";
+import financialHealthRoutes from "./routes/financialHealthRoutes.js";
 
 dotenvConfig();
 
