@@ -106,7 +106,7 @@ export default function Header() {
 
                   <a className="mobile-menu-about" href="/about" onClick={closeMobileMenu}>Hakkımızda</a>
                   <a className="mobile-menu-contact" href="/contact" onClick={closeMobileMenu}>İletişim</a>
-                  <a className="mobile-menu-sign-in" href="/sign-in">Giriş yap</a>
+                  <a className="mobile-menu-sign-in" href="/signin">Giriş yap</a>
                 </nav>
               </div>
             )}
