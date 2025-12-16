@@ -1,0 +1,196 @@
+.section-container {
+  padding: 100px 0;
+  background-color: #f6f9fc;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  overflow: visible;
+}
+
+.businesses-carousel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header-title {
+  color: #0a2540;
+  font-weight: 500;
+  font-size: 34px;
+  line-height: 1.29412;
+  letter-spacing: -.2px;
+}
+
+.header-description {
+  color: #425466;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.55556;
+}
+
+.businesses-carousel-scroll-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 20px;
+  margin: 0;        
+}
+
+.businesses-carousel-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: visible;
+  overflow-y: hidden;
+  padding: 40px 200px;
+  padding-bottom: 70px;
+  scroll-behavior: smooth;
+}
+
+.businesses-carousel-container.dragging {
+  scroll-behavior: auto !important;
+}
+
+.businesses-carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.businesses-carousel-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.business-card {
+  border-radius: 8px;
+  min-width: 500px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 13px 27px -5px rgba(50,50,93,0.25),0 8px 16px -8px rgba(0,0,0,0.3);
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  scroll-snap-align: start;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.business-card:hover {
+  box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3);;
+  transform: scale(1.03);
+}
+
+.business-card::before {
+  content: "";
+  width: 100%;
+  height: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background: #635bff;
+}
+
+.business-description-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0px 40px;
+  padding-top: 20px;
+}
+
+.business-title {
+  font-size: 28px;
+  font-weight: 425;
+  letter-spacing: 0;
+  color: #0a2540;
+  line-height: 36px;
+}
+
+.business-description {
+  font-size: 18px;
+  color: #425466;
+  line-height: 28px;
+  font-weight: 300;
+}
+
+.business-details-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #635bff;
+  cursor: pointer;
+  max-width: max-content;
+}
+
+.business-details-text {
+  font-size: 15px;
+  font-weight: 425;
+  line-height: 1.6;
+}
+
+.brands {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  margin: 0px 40px;
+  margin-bottom: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ecf0f4;
+}
+
+.brand-icon {
+  width: 30px;
+  height: 30px;
+  color: #425466;
+}
+
+.section-header {
+  padding: 0 200px;
+  display: flex;
+  gap: 250px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+  align-self: flex-end;
+}
+
+.nav-buttons > button {
+  background-color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+@media (max-width: 1100px) {
+  .section-header {
+    padding: 0 40px;
+    gap: 100px;
+  }
+
+  .businesses-carousel-container {
+    padding: 30px 40px;
+    padding-bottom: 70px;
+  }
+}
+
+@media (max-width: 600px) {
+  .business-card {
+    min-width: 300px;
+    min-height: 350px;
+  }
+
+  .section-header {
+    padding: 0 40px;
+    gap: 0px;
+  }
+}

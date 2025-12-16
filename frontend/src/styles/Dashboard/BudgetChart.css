@@ -1,0 +1,19 @@
+.chart-wrapper {
+  background: white;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-top: 20px;
+  user-select: none;
+}
+
+.chart-wrapper svg:focus,
+.chart-wrapper svg *:focus {
+  outline: none !important;
+}
+
+.chart-wrapper h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #30313d;
+}

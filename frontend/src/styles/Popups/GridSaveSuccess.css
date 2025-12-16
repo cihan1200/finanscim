@@ -1,0 +1,54 @@
+.grid-save-success-overlay {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  /* Entry animation */
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+/* --- NEW: Exit Animation Class --- */
+.grid-save-success-overlay.exiting {
+  animation: slideOut 0.3s ease-in forwards;
+}
+
+.grid-save-success-content {
+  background-color: #10b981; /* Emerald 500 */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.success-icon {
+  color: #fff;
+}
+
+/* Entry Keyframes */
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- NEW: Exit Keyframes --- */
+@keyframes slideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20px); /* Move back up */
+    opacity: 0;
+  }
+}

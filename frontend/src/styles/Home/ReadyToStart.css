@@ -1,0 +1,165 @@
+.ready-to-start-container {
+  display: flex;
+  gap: 50px;
+  padding: 200px;
+  background-color: #f6f9fc;
+}
+
+.start-now-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.start-now-container > span:nth-child(1) {
+  color: #0a2540;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.33333;
+  letter-spacing: .1px;
+}
+
+.start-now-container > span:nth-child(2) {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.55556;
+}
+
+.buttons-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.buttons-container > button:nth-child(1) {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  color: #fff;
+  background-color: #635bff;
+  font-size: 15px;
+  font-weight: 425;
+  padding: 10px 20px;
+  padding-right: 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all .2s ease;
+}
+
+.buttons-container > button:nth-child(1):hover {
+  background-color: #0a2540;
+}
+
+.icon-parent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 22px;
+}
+
+.icon-parent::before {
+  content: "";
+  position: absolute;
+  height: 2.5px;
+  background-color: currentColor;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 6px;
+  width: 0;
+  transition: width 0.25s ease;
+  border-radius: 2px;
+}
+
+.chevron {
+  transition: transform 0.25s ease;
+  z-index: 2;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+}
+
+.button:hover .icon-parent::before {
+  width: 10px;
+}
+
+.button:hover .chevron {
+  transform: translateX(5px);
+}
+
+.buttons-container > button:nth-child(2) {
+  border: none;
+  outline: none;
+  color: #635bff;
+  font-size: 15px;
+  font-weight: 425;
+  line-height: 1.6;
+  background-color: #f6f9fc;
+  transition: all .3s ease;
+}
+
+.buttons-container > button:nth-child(2):hover {
+  color: #0a2540;
+}
+
+.details-container {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.details-container > div > button {
+  border: none;
+  outline: none;
+  color: #635bff;
+  font-size: 15px;
+  font-weight: 425;
+  line-height: 1.6;
+  background-color: #f6f9fc;
+  transition: all .3s ease;
+}
+
+.details-container > div > button:hover {
+  color: #0a2540;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.detail > * {
+  padding-left: 10px;
+}
+
+.detail-title {
+  color: #0a2540;
+  font-size: 15px;
+  font-weight: 425;
+  line-height: 1.6;
+  border-left: 1px solid #635bff;
+}
+
+.detail-description {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: #425466;
+}
+
+@media only screen and (max-width: 1100px) {
+  .ready-to-start-container {
+    padding: 200px 30px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .ready-to-start-container {
+    flex-direction: column;
+  }
+}

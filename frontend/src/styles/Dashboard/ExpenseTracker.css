@@ -1,0 +1,257 @@
+.expense-tracker-container {
+  background: #ffffff;
+  border: 1px solid #edf2f7;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+  position: relative;
+  font-family: "Stack Sans Text", sans-serif; /* Fixed Font */
+}
+
+.expense-tracker-title {
+  color: #1a202c;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #edf2f7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Empty State */
+.expense-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f7fafc;
+  border-radius: 12px;
+  border: 2px dashed #e2e8f0;
+  color: #718096;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.expense-empty-state p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.empty-state-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+/* --- List Items (Cards) --- */
+.expense-additional-group {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+  margin-bottom: 15px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.expense-additional-group:hover {
+  border-color: #cbd5e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.expense-input-wrapper {
+  display: flex;
+  flex: 1;
+  gap: 15px;
+}
+
+.expense-input-name {
+  flex: 2;
+}
+
+.expense-input-value {
+  flex: 1;
+}
+
+.expense-input-name label,
+.expense-input-value label {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: #718096;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Modern Input Style */
+.expense-input-name input,
+.expense-input-value input {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #f7fafc;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #2d3748;
+  font-weight: 500;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.expense-input-name input:focus,
+.expense-input-value input:focus {
+  background-color: #ffffff;
+  border-color: #635bff;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.15);
+  outline: none;
+}
+
+/* Remove Button - Fixed Alignment */
+.remove-expense-button {
+  height: 42px;
+  width: 42px;
+  background-color: #fff5f5;
+  color: #e53e3e;
+  border: 1px solid #fed7d7;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 22px; /* Slightly larger X */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-bottom: 1px;
+  padding: 0; /* Reset padding for perfect center */
+  line-height: 1; /* Reset line-height for perfect center */
+}
+
+.remove-expense-button:hover {
+  background-color: #e53e3e;
+  color: white;
+  border-color: #e53e3e;
+  transform: rotate(90deg);
+}
+
+/* --- Action Buttons Area --- */
+.expense-tracker-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #edf2f7;
+}
+
+.add-expense-button, .add-first-expense-button {
+  background-color: #ebf8ff;
+  border: 1px solid transparent;
+  color: #3182ce;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-expense-button:hover, .add-first-expense-button:hover {
+  background-color: #bee3f8;
+  color: #2b6cb0;
+  transform: translateY(-1px);
+}
+
+.save-expense-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(118, 75, 162, 0.2);
+  transition: all 0.2s ease;
+}
+
+.save-expense-button:hover:not(.disabled) {
+  box-shadow: 0 6px 12px rgba(118, 75, 162, 0.3);
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.save-expense-button.disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  opacity: 0.7;
+}
+
+/* Total Section */
+.total-expenses {
+  margin-top: 25px;
+  background: #f7fafc;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #4a5568;
+  border: 1px solid #edf2f7;
+}
+
+.total-expenses strong {
+  font-size: 20px;
+  color: #2d3748;
+  font-weight: 800;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    max-height: 120px;
+    margin-bottom: 15px;
+    padding: 20px;
+    border-width: 1px;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+    max-height: 0;
+    margin-bottom: 0;
+    padding: 0;
+    border-width: 0;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Popups z-index fix */
+.confirmation-popup-overlay, .success-popup-overlay {
+  z-index: 9999;
+}

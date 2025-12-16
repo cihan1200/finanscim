@@ -1,0 +1,338 @@
+.budget-overview-container {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  margin-bottom: 24px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.overview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.overview-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+}
+
+.current-month-label {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.summary-block {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.summary-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.icon-income {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.icon-expense {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.balance-content {
+  width: 100%;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.income-text { color: #059669; }
+.expense-text { color: #dc2626; }
+
+.balance-block.positive-bg {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  color: white;
+}
+
+.balance-block.negative-bg {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: none;
+  color: white;
+}
+
+.balance-block .summary-label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.balance-block .summary-value {
+  color: white;
+}
+
+.summary-trend {
+  margin-top: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.trend-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.balance-block .trend-indicator {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.trend-label {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.overview-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-container-relative {
+  position: relative;
+}
+
+.overview-save-button {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.overview-save-button:hover:not(.disabled) {
+  background-color: #4338ca;
+}
+
+.overview-save-button.disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.saving-popup {
+  position: absolute;
+  bottom: 110%;
+  right: 0;
+  background-color: #1f2937;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid #635bff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.overview-divider {
+  border: 0;
+  border-top: 1px solid #f3f4f6;
+  margin: 32px 0;
+}
+
+.yearly-grid-section {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.grid-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.grid-save-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+}
+
+.grid-save-button:hover:not(:disabled) {
+  background-color: #4338ca;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+}
+
+.grid-save-button:disabled {
+  background-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.months-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.month-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.month-card:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.month-card.current {
+  background-color: #eff6ff;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 1px #60a5fa;
+}
+
+.month-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.current-badge {
+  font-size: 0.7rem;
+  color: #2563eb;
+  background-color: #dbeafe;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.month-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #111827;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #f9fafb;
+}
+
+.month-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  background-color: #fff;
+}
+
+.month-input.read-only {
+  background-color: transparent;
+  border-color: transparent;
+  font-weight: 700;
+  color: #2563eb;
+  padding-left: 0;
+  cursor: default;
+}
+.month-input.read-only:focus {
+  box-shadow: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .overview-title {
+    font-size: 20px;
+  }
+
+  .grid-save-button {
+    font-size: 15px;
+  }
+}

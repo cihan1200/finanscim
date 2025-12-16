@@ -1,0 +1,332 @@
+/* Component Container */
+.company-stories-container {
+  padding: 100px 200px;
+}
+
+/* Company Stoires Header Container */
+.company-stories-header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.company-stories-header-subtitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: #635bff;
+  line-height: 1.55556;
+}
+
+.company-stories-header-title {
+  font-size: 34px;
+  font-weight: 500;
+  color: #0a2540;
+  line-height: 1.29412;
+  letter-spacing: -.2px;
+}
+
+.company-stories-header-description {
+  font-size: 18px;
+  font-weight: 300;
+  color: #425466;
+  line-height: 1.55556;
+}
+
+.company-stories-header-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  outline: none;
+  background-color: #635bff;
+  color: #fff;
+  border-radius: 16.5px;
+  max-width: max-content;
+  font-size: 15px;
+  font-weight: 425;
+  padding: 5px 15px;
+  transition: all 0.3s ease;
+}
+
+.company-stories-header-button:hover {
+  background-color: rgba(99, 91, 255, 0.8);
+}
+
+
+/* Company Stoires Carousel Statistics With Image Container */
+.company-stories-carousel-statistics-with-image-container {
+  display: flex;
+  align-items: center;
+  padding-top: 50px;
+  justify-content: space-between;
+}
+
+/* Company Stoires Carousel Statistics Container */
+.company-stories-carousel-statistics-container {
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  justify-content: space-between;
+  max-width: 300px;
+}
+
+.company-stories-carousel-first-statistic-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.company-stories-carousel-first-statistic-value {
+  color: #0a2540;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: .2px;
+  line-height: 1.33;
+  border-left: 1px solid #635bff;
+  padding-left: 10px;
+}
+
+.company-stories-carousel-first-statistic-description {
+  font-size: 15px;
+  font-weight: 300;
+  color: #425466;
+  line-height: 1.6;
+}
+
+.company-stories-carousel-second-statistic-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.company-stories-carousel-second-statistic-value {
+  color: #0a2540;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: .2px;
+  line-height: 1.33;
+  border-left: 1px solid #635bff;
+  padding-left: 10px;
+}
+
+.company-stories-carousel-second-statistic-description {
+  font-size: 15px;
+  font-weight: 300;
+  color: #425466;
+  line-height: 1.6;
+}
+
+.company-stories-carousel-used-products-statistic-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.company-stories-carousel-used-products-text {
+  font-size: 15px;
+  font-weight: 425;
+  line-height: 1.6;
+  letter-spacing: .2px;
+  color: #0a2540;
+  border-left: 1px solid #635bff;
+  padding-left: 10px;
+}
+
+.company-stories-carousel-used-products-container {
+  color: #425466;
+  font-size: 18px;
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.first-used-product {
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.payments-icon {
+  width: 27px;
+}
+
+.second-used-product {
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.connect-icon {
+  width: 27px;
+}
+
+/* Company Stories Carousel Image Container */
+.company-stories-carousel-image-container {
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);;
+  background-size: 115%;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 400px;
+  width: 800px;
+  border-radius: 16.5px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 25px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: background-size 0.6s ease;
+}
+
+.company-stories-carousel-image-container-link-logo {
+  margin-left: auto;
+}
+
+.company-stories-carousel-image-container-description {
+  color: #fff;
+  margin-top: auto;
+  transform: translateY(0px);
+  transition: transform 0.4s ease;
+}
+
+.company-stories-carousel-image-container-description span:nth-child(1) {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 36px;
+}
+
+.read-story-text {
+  font-size: 17px;
+  font-weight: 300;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.read-story-text.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.read-story-text.hide {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+
+/* Company Stories Carousel Companies Nav Container */
+.company-stories-carousel-companies-nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.amazon {
+  width: 90px;
+}
+
+.bmw {
+  width: 60px;
+}
+
+.maersk {
+  width: 150px;
+}
+
+.twilio {
+  width: 90px;
+}
+
+.company-stories-carousel-companies-nav-container > div {
+  padding: 50px;
+}
+
+
+/* Hovers */
+.company-stories-carousel-image-container:hover 
+.company-stories-carousel-image-container-description {
+  transform: translateY(-10px);
+}
+
+.company-stories-carousel-image-container:hover {
+  background-size: 110%;
+}
+
+
+/* Animations */
+.slide-up-fade {
+  animation: slideUpFade 0.5s ease forwards;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-left {
+  opacity: 0;
+  transform: translateX(80px);
+  animation: slideLeftFade 0.6s ease forwards;
+}
+
+@keyframes slideLeftFade {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-right {
+  transform: translateX(-80px);
+  animation: slideRight 0.6s ease forwards;
+}
+
+@keyframes slideRight {
+  to {
+    transform: translateX(0);
+  }
+}
+
+
+/* Responsivness */
+@media only screen and (max-width: 1100px) {
+  .company-stories-container {
+    padding: 100px 30px;
+  }
+
+  .company-stories-carousel-statistics-with-image-container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 50px;
+  }
+
+  .company-stories-carousel-image-container {
+    height: 400px;
+    width: auto;
+  }
+
+  .company-stories-carousel-statistics-container {
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    width: 450px;
+    margin-right: auto;
+    margin-bottom: 50px;
+  }
+
+  .company-stories-carousel-companies-nav-container {
+    display: none;
+  }
+
+  .company-stories-carousel-image-container-description span:nth-child(1) {
+    font-size: 20px;
+  }
+}
