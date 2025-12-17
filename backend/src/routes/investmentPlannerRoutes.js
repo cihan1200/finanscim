@@ -9,7 +9,8 @@ const yahooFinance = new YahooFinance({
   suppressNotices: ["yahooSurvey"],
 });
 
-const calculateAssetMetrics = async (symbol) => {
+const calculateAssetMetrics = async (info) => {
+  const { symbol, name, type } = info;
   try {
     const today = new Date();
     const pastDate = new Date();
@@ -40,14 +41,16 @@ const calculateAssetMetrics = async (symbol) => {
     }
     const mean = returns.reduce((a, b) => a + b, 0) / returns.length;
     const variance = returns.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / (returns.length - 1);
-    const annualizedVolatility = Math.sqrt(variance) * Math.sqrt(252) * 100;
+    const tradingDays = type === 'crypto' ? 365 : 252;
+    const annualizedVolatility = Math.sqrt(variance) * Math.sqrt(tradingDays) * 100;
 
     return {
       symbol: symbol,
-      name: symbol,
+      name: name, // İstersen DB'den gelen tam ismi buraya taşıyabilirsin
+      type: type,   // YENİ: Type bilgisini response'a ekledik
       currentPrice: parseFloat(currentPrice.toFixed(2)),
       dailyChange: parseFloat(dailyChange.toFixed(2)),
-      change: parseFloat(periodChange.toFixed(2)), // 90-day
+      change: parseFloat(periodChange.toFixed(2)),
       volatility: parseFloat(annualizedVolatility.toFixed(2)),
       high: Math.max(...quotes.map(q => q.high)),
       low: Math.min(...quotes.map(q => q.low))
@@ -58,12 +61,20 @@ const calculateAssetMetrics = async (symbol) => {
   }
 };
 
-const fetchMarketData = async () => {
+const fetchMarketData = async (filterType = null) => {
   try {
-    const stockDocs = await Stock.find({}).sort({ rank: 1 }).limit(50);
-    const poolToProcess = stockDocs.map(doc => doc.symbol);
+    const query = (filterType && filterType !== 'all') ? { type: filterType } : {};
+    const stockDocs = await Stock.find(query).sort({ rank: 1 });
+
+    // BURASI DEĞİŞTİ: Sadece symbol değil, name ve type'ı da paketleyip gönderiyoruz
+    const poolToProcess = stockDocs.map(doc => ({
+      symbol: doc.symbol,
+      name: doc.name,
+      type: doc.type
+    }));
+
     const results = await Promise.all(
-      poolToProcess.map(symbol => calculateAssetMetrics(symbol))
+      poolToProcess.map(info => calculateAssetMetrics(info)) // info objesini gönder
     );
     const validAssets = results.filter(a => a !== null && a.currentPrice > 0);
     return validAssets;
@@ -94,7 +105,8 @@ router.get("/get_survey_questions", async (_req, res) => {
 
 router.get("/get_market_list", async (req, res) => {
   try {
-    const data = await fetchMarketData();
+    // StockExplorer için tüm listeyi dönsün ('all')
+    const data = await fetchMarketData('all');
     res.json(data);
   } catch (error) {
     res.status(500).json({ message: "Error fetching market list" });
@@ -146,40 +158,76 @@ router.get("/get_stock_detail", async (req, res) => {
 router.get("/get_market_recommendations", async (req, res) => {
   try {
     const userScore = parseInt(req.query.score) || 10;
-    const validAssets = await fetchMarketData();
+    const requestedType = req.query.type || 'all';
+
+    // Verileri çek
+    const validAssets = await fetchMarketData(requestedType);
     if (validAssets.length === 0) return res.status(503).json({ message: "Market data unavailable" });
+
+    // AHP Hesaplamaları (Mevcut kodun aynısı)
     const volatilities = validAssets.map(a => a.volatility);
     const changes = validAssets.map(a => a.change);
     const minVol = Math.min(...volatilities);
     const maxVol = Math.max(...volatilities);
     const minChange = Math.min(...changes);
     const maxChange = Math.max(...changes);
+
     const normalizedUserScore = Math.max(0, Math.min(1, (userScore - 7) / 14));
+
+    // Ağırlıklandırma
     const weightGrowth = 0.2 + (0.6 * normalizedUserScore);
     const weightStability = 1 - weightGrowth;
+
+    // Skorlama
     const scoredAssets = validAssets.map(asset => {
       const normVol = (asset.volatility - minVol) / (maxVol - minVol || 1);
-      const stabilityScore = 1 - normVol;
-      const growthScore = (asset.change - minChange) / (maxChange - minChange || 1);
+      const stabilityScore = 1 - normVol; // Düşük volatilite = Yüksek puan
+      const growthScore = (asset.change - minChange) / (maxChange - minChange || 1); // Yüksek getiri = Yüksek puan
+
       const ahpScore = (stabilityScore * weightStability) + (growthScore * weightGrowth);
       return { ...asset, ahpScore };
     });
+
+    // Sıralama ve Seçim
     scoredAssets.sort((a, b) => b.ahpScore - a.ahpScore);
     const recommendations = scoredAssets.slice(0, 3);
+
+    // --- YENİ: DETAYLI YORUM MANTIĞI ---
+
+    // Önerilen ilk 3 varlığın ortalama istatistiklerini hesapla
+    const avgVol = (recommendations.reduce((sum, item) => sum + item.volatility, 0) / recommendations.length).toFixed(1);
+    const avgChange = (recommendations.reduce((sum, item) => sum + item.change, 0) / recommendations.length).toFixed(1);
+
+    // Varlık türü ismini Türkçeleştir (Yorumda kullanmak için)
+    let typeName = "piyasalar";
+    if (requestedType === 'stock') typeName = "hisse senedi piyasası";
+    else if (requestedType === 'crypto') typeName = "kripto para piyasası";
+    else if (requestedType === 'forex') typeName = "döviz piyasası";
+    else if (requestedType === 'commodity') typeName = "emtia piyasası";
+
     let riskCategory = "Dengeli";
     let comment = "";
+
     if (userScore <= 10) {
-      riskCategory = "Düşük Risk";
-      comment = `Profiliniz sermaye koruma odaklı. Algoritmamız, piyasa dalgalanmalarına karşı dirençli olan (${recommendations[0].symbol}) gibi varlıkları seçti.`;
+      // Düşük Risk (Conservative)
+      riskCategory = "Muhafazakar (Düşük Risk)";
+      comment = `Profiliniz sermaye koruma odaklı. ${typeName} genelinde dalgalanmaların yüksek olduğu bu dönemde, algoritmamız riskinizi minimize etmek için ortalama volatilitesi %${avgVol} olan en istikrarlı varlıkları seçti. Önceliğimiz ana paranızı korurken düzenli bir değer artışı sağlamak.`;
+
     } else if (userScore <= 16) {
-      riskCategory = "Orta Risk";
-      comment = `Büyüme potansiyeli ile güvenlik arasında bir denge arıyorsunuz.`;
+      // Orta Risk (Balanced)
+      riskCategory = "Dengeli (Orta Risk)";
+      comment = `Büyüme potansiyeli ile güvenlik arasında ideal bir denge arıyorsunuz. Seçilen portföy, hem piyasa düşüşlerine karşı dirençli hem de son 90 günde ortalama %${avgChange} getiri performansı göstermiş varlıklardan oluşuyor. Risk ve getiri optimizasyonu sağlandı.`;
+
     } else {
-      riskCategory = "Yüksek Risk";
-      comment = `Maksimum getiri hedefliyorsunuz. Yüksek momentumlu hisseler seçildi.`;
+      // Yüksek Risk (Aggressive)
+      riskCategory = "Agresif Büyüme (Yüksek Risk)";
+      comment = `Hedefiniz maksimum getiri. Algoritmamız, ${typeName} içerisinde son dönemde güçlü momentum yakalayan ve ortalama %${avgChange} getiri sağlayan varlıkları tespit etti. Seçilen varlıklar yüksek volatiliteye (%${avgVol}) sahip olsa da, uzun vadede en yüksek büyüme potansiyelini sunuyor.`;
     }
+
     res.json({ riskCategory, comment, recommendations });
+
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Error calculating recommendations" });
   }
 });

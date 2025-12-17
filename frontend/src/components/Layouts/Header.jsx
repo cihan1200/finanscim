@@ -98,10 +98,10 @@ export default function Header() {
                       <X width="27px" height="27px" color="#0a2540" cursor="pointer" onClick={closeMobileMenu} />
                     </span>
                     <span className="mobile-features-title">FİNANSAL YÖNETİM</span>
-                    <span className="features-links"><ChartPie className="mobile-menu-icons" size="1.2em" />Gelir-Gider Takibi</span>
-                    <span className="features-links"><Wallet className="mobile-menu-icons" size="1.2em" />Yatırım Planlama</span>
-                    <span className="features-links"><Radar className="mobile-menu-icons" size="1.2em" />Radar</span>
-                    <span className="features-links"><Telescope className="mobile-menu-icons" size="1.2em" />Hisseler Özeti</span>
+                    <span className="features-links" onClick={() => { navigate("/dashboard"); }}><ChartPie className="mobile-menu-icons" size="1.2em" />Gelir-Gider Takibi</span>
+                    <span className="features-links" onClick={() => { navigate("/dashboard/investment_planner"); }} ><Wallet className="mobile-menu-icons" size="1.2em" />Yatırım Planlama</span>
+                    <span className="features-links" onClick={() => { navigate("/dashboard/radar"); }}><Radar className="mobile-menu-icons" size="1.2em" />Radar</span>
+                    <span className="features-links" onClick={() => { navigate("/dashboard/stock_explorer"); }}><Telescope className="mobile-menu-icons" size="1.2em" />Hisseler Özeti</span>
                   </div>
 
                   <a className="mobile-menu-about" href="/about" onClick={closeMobileMenu}>Hakkımızda</a>
@@ -121,10 +121,10 @@ export default function Header() {
               <div className={`features-wrapper ${featuresMenuOpen ? "open" : ""}`}>
                 <span className="subtitle">FİNANSAL YÖNETİM</span>
                 <div className="features-menu">
-                  <span><ChartPie className="menu-icons" size="1.2em" />Gelir-Gider Takibi</span>
-                  <span><Wallet className="menu-icons" size="1.2em" />Yatırım Planlama</span>
-                  <span><Radar className="menu-icons" size="1.2em" />Radar</span>
-                  <span><Telescope className="menu-icons" size="1.2em" />Hisseler Özeti</span>
+                  <span onClick={() => { navigate("/dashboard"); }} ><ChartPie className="menu-icons" size="1.2em" />Gelir-Gider Takibi</span>
+                  <span onClick={() => { navigate("/dashboard/investment_planner"); }}><Wallet className="menu-icons" size="1.2em" />Yatırım Planlama</span>
+                  <span onClick={() => { navigate("/dashboard/radar"); }}><Radar className="menu-icons" size="1.2em" />Radar</span>
+                  <span onClick={() => { navigate("/dashboard/stock_explorer"); }} ><Telescope className="menu-icons" size="1.2em" />Hisseler Özeti</span>
                 </div>
               </div>
             </div>

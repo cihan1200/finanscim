@@ -5,12 +5,20 @@ import {
   ChevronRight,
   TrendingUp,
   TrendingDown,
-  Zap,
+  User,
   BarChart2,
   Lightbulb,
   CheckCircle,
   RefreshCw,
-  ArrowRight
+  ArrowRight,
+  ArrowLeft,
+  // --- YENİ EKLENENLER ---
+  Globe,      // Tüm Piyasalar için
+  Building2,  // Hisseler (Şirketler) için
+  Bitcoin,    // Kripto için
+  Banknote,   // Döviz (Kağıt Para) için
+  Gem,        // Emtia (Değerli Maden) için
+  Activity    // Endeksler (Piyasa Nabzı) için
 } from "lucide-react";
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -24,6 +32,41 @@ export default function InvestmentPlanner() {
   const [resultData, setResultData] = useState(null);
   const [recommendationData, setRecommendationData] = useState(null);
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
+
+  const [selectedAssetType, setSelectedAssetType] = useState("all");
+
+  const assetTypes = [
+    {
+      value: "all",
+      label: "Tüm Piyasalar",
+      icon: <Globe size={22} /> // Küresel piyasaları temsilen Dünya ikonu
+    },
+    {
+      value: "stock",
+      label: "Hisse Senetleri",
+      icon: <Building2 size={22} /> // Şirketleri temsilen Bina ikonu
+    },
+    {
+      value: "crypto",
+      label: "Kripto Paralar",
+      icon: <Bitcoin size={22} /> // Doğrudan Bitcoin logosu
+    },
+    {
+      value: "forex",
+      label: "Döviz Çiftleri",
+      icon: <Banknote size={22} /> // Nakit parayı temsilen Banknot
+    },
+    {
+      value: "commodity",
+      label: "Emtialar",
+      icon: <Gem size={22} /> // Altın/Gümüş gibi değerli madenleri temsilen Mücevher
+    },
+    {
+      value: "index",
+      label: "Borsa Endeksleri",
+      icon: <Activity size={22} /> // Piyasanın genel nabzını gösteren Aktivite/EKG çizgisi
+    }
+  ];
 
   useEffect(() => {
     const fetchSurveyQuestions = async () => {
@@ -52,32 +95,76 @@ export default function InvestmentPlanner() {
     }
   };
 
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+    }
+  };
+
   const calculateResults = async () => {
     const totalScore = Object.values(answers).reduce((acc, curr) => acc + curr, 0);
+
     setResultData({ totalScore });
     setIsSurveyStarted(false);
     setIsSurveyFinished(true);
     setIsLoadingRecommendations(true);
+
     try {
       const res = await axios.get(
-        `${apiUrl}/dashboard/get_market_recommendations?score=${totalScore}`
+        `${apiUrl}/dashboard/get_market_recommendations?score=${totalScore}&type=${selectedAssetType}`
       );
       setRecommendationData(res.data);
     } catch (error) {
       console.log("Error fetching recommendations", error);
     }
+
     setIsLoadingRecommendations(false);
   };
 
-  const formatCurrency = (val) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+  const getCurrencySymbolOverride = code => {
+    switch (code) {
+      case "TRY":
+        return "₺";
+      case "CHF":
+        return "Fr.";
+      default:
+        return null;
+    }
   };
 
-  const getIcon = () => {
-    return <BarChart2 size={24} className="asset-icon-svg" />;
+  const formatCurrency = (val, symbol) => {
+    let currencyCode = "USD";
+
+    if (!symbol) return `$${val.toFixed(2)}`;
+
+    if (symbol.includes("TRY") || symbol.endsWith(".IS")) {
+      currencyCode = "TRY";
+    } else if (symbol.endsWith("=X")) {
+      const clean = symbol.replace("=X", "");
+      if (clean.length === 6) currencyCode = clean.slice(3);
+    } else if (symbol.includes("-")) {
+      const parts = symbol.split("-");
+      if (parts.length === 2) currencyCode = parts[1];
+    }
+
+    const override = getCurrencySymbolOverride(currencyCode);
+    if (override) return `${override} ${val.toFixed(2)}`;
+
+    try {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: currencyCode,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(val);
+    } catch {
+      return `$${val.toFixed(2)}`;
+    }
   };
 
-  const getVolBadgeClass = (vol) => {
+  const getIcon = () => <BarChart2 size={24} className="asset-icon-svg" />;
+
+  const getVolBadgeClass = vol => {
     if (vol < 20) return "badge-green";
     if (vol < 40) return "badge-yellow";
     return "badge-red";
@@ -88,30 +175,48 @@ export default function InvestmentPlanner() {
       <div className="planner-header">
         <h2 className="planner-title">Yatırım Planlama</h2>
         {!isSurveyStarted && !isSurveyFinished && (
-          <span className="planner-subtitle">Yapay Zeka Destekli Portföy Önerisi</span>
+          <span className="planner-subtitle">Portföy önerisi sunma aracı</span>
         )}
       </div>
+
+      {/* ------------------------ ASSET TYPE SELECTION ------------------------ */}
       {!isSurveyStarted && !isSurveyFinished && (
         <div className="intro-card">
           <div className="intro-content">
-            <div className="intro-icon-wrapper">
-              <Zap size={32} />
+            <h3 style={{ marginBottom: "1rem" }}>İlgilendiğiniz Yatırım Aracı</h3>
+
+            <div className="asset-type-grid">
+              {assetTypes.map(item => (
+                <div
+                  key={item.value}
+                  onClick={() => setSelectedAssetType(item.value)}
+                  className={`asset-type-card ${selectedAssetType === item.value ? "asset-type-selected" : ""
+                    }`}
+                >
+                  <div className="asset-icon">{item.icon}</div>
+                  <span className="asset-type-label">{item.label}</span>
+                </div>
+              ))}
             </div>
+
+            <div className="intro-icon-wrapper">
+              <User size={32} />
+            </div>
+
             <h3>Yatırım Profilinizi Keşfedin</h3>
             <p>
               Risk toleransı anketi ile finansal hedeflerinizi analiz ediyor,
-              AHP (Analitik Hiyerarşi Prosesi) algoritması kullanarak size en uygun
-              S&P 500 hisselerini öneriyoruz.
+              size en uygun yatırım araçlarını öneriyoruz.
             </p>
-            <button
-              className="start-button"
-              onClick={() => setIsSurveyStarted(true)}
-            >
+
+            <button className="start-button" onClick={() => setIsSurveyStarted(true)}>
               Analize Başla <ChevronRight size={18} />
             </button>
           </div>
         </div>
       )}
+
+      {/* ------------------------ SURVEY SECTION ------------------------ */}
       {isSurveyStarted && !isSurveyFinished && surveyQuestions.length > 0 && (
         <div className="survey-wizard">
           <div className="progress-bar-container">
@@ -120,14 +225,19 @@ export default function InvestmentPlanner() {
               style={{ width: `${((currentStep + 1) / surveyQuestions.length) * 100}%` }}
             ></div>
           </div>
+
           <div className="question-card">
-            <span className="question-counter">Soru {currentStep + 1} / {surveyQuestions.length}</span>
+            <span className="question-counter">
+              Soru {currentStep + 1} / {surveyQuestions.length}
+            </span>
             <h3 className="question-text">{surveyQuestions[currentStep].question}</h3>
+
             <div className="options-grid">
               {surveyQuestions[currentStep].options.map((option, idx) => (
                 <label
                   key={idx}
-                  className={`option-card ${answers[currentStep] === option.value ? 'selected' : ''}`}
+                  className={`option-card ${answers[currentStep] === option.value ? "selected" : ""
+                    }`}
                 >
                   <input
                     type="radio"
@@ -138,24 +248,39 @@ export default function InvestmentPlanner() {
                   />
                   <div className="option-content">
                     <span className="option-label">{option.label}</span>
-                    {answers[currentStep] === option.value && <CheckCircle size={18} className="check-icon" />}
+                    {answers[currentStep] === option.value && (
+                      <CheckCircle size={18} className="check-icon" />
+                    )}
                   </div>
                 </label>
               ))}
             </div>
+
             <div className="wizard-actions">
+              <button
+                className="back-button"
+                disabled={currentStep === 0}
+                onClick={handleBack}
+              >
+                <ArrowLeft size={16} /> Geri
+              </button>
+
               <button
                 className="next-button"
                 disabled={!answers[currentStep]}
                 onClick={handleNext}
               >
-                {currentStep === surveyQuestions.length - 1 ? 'Sonuçları Gör' : 'Sonraki Soru'}
+                {currentStep === surveyQuestions.length - 1
+                  ? "Sonuçları Gör"
+                  : "Sonraki Soru"}
                 <ArrowRight size={16} />
               </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* ------------------------ RESULTS ------------------------ */}
       {isSurveyFinished && (
         <div className="results-view">
           <div className="score-summary-card">
@@ -166,6 +291,7 @@ export default function InvestmentPlanner() {
                 <span className="score-total">/ 21</span>
               </div>
             </div>
+
             <div className="profile-info">
               <span className="profile-title">YATIRIMCI PROFİLİ</span>
               <h2 className="profile-name">
@@ -173,6 +299,7 @@ export default function InvestmentPlanner() {
               </h2>
             </div>
           </div>
+
           {!isLoadingRecommendations && recommendationData?.comment && (
             <div className="insight-card">
               <div className="insight-icon">
@@ -184,7 +311,9 @@ export default function InvestmentPlanner() {
               </div>
             </div>
           )}
+
           <h3 className="section-title">Sizin İçin Seçilen Hisseler</h3>
+
           {isLoadingRecommendations ? (
             <div className="loading-state">
               <div className="spinner-ip"></div>
@@ -199,21 +328,26 @@ export default function InvestmentPlanner() {
                       <div className="stock-icon">{getIcon()}</div>
                       <div>
                         <h4 className="stock-symbol">{asset.symbol}</h4>
-                        <span className="stock-name">S&P 500 Stock</span>
+                        <span className="stock-name" style={{ fontSize: "0.85rem", color: "#64748b" }}>
+                          {asset.name}
+                        </span>
                       </div>
                     </div>
+
                     <div className="stock-price">
-                      {formatCurrency(asset.currentPrice)}
+                      {formatCurrency(asset.currentPrice, asset.symbol)}
                     </div>
                   </div>
+
                   <div className="stock-metrics">
                     <div className="metric-item">
                       <span className="metric-label">90 Günlük Değişim</span>
-                      <span className={`metric-value ${asset.change >= 0 ? 'trend-up' : 'trend-down'}`}>
+                      <span className={`metric-value ${asset.change >= 0 ? "trend-up" : "trend-down"}`}>
                         {asset.change >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
                         {Math.abs(asset.change)}%
                       </span>
                     </div>
+
                     <div className="metric-item">
                       <span className="metric-label">Volatilite (Risk)</span>
                       <span className={`metric-badge ${getVolBadgeClass(asset.volatility)}`}>
@@ -225,6 +359,7 @@ export default function InvestmentPlanner() {
               ))}
             </div>
           )}
+
           {!isLoadingRecommendations && (
             <button
               className="reset-button"

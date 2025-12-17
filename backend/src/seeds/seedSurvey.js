@@ -4,61 +4,67 @@ import SurveyQuestion from "../models/surveyQuestion.js";
 
 dotenvConfig();
 
+/* Mantık:
+   Value 1: Muhafazakar (Düşük Risk / Koruma Odaklı)
+   Value 2: Dengeli (Orta Risk / Büyüme ve Koruma)
+   Value 3: Agresif (Yüksek Risk / Maksimum Getiri)
+*/
+
 const questions = [
   {
-    question: "Yatırım yapmaktaki birincil amacınız nedir?",
+    question: "Yatırım yaparken sizin için en önemli öncelik hangisidir?",
     options: [
-      { label: "Sermayemi korumak (Düşük Risk)", value: 1 },
-      { label: "Enflasyona karşı korumak (Orta Risk)", value: 2 },
-      { label: "Sermayemi büyütmek (Yüksek Risk)", value: 3 },
+      { label: "Ana paramın değerini kesinlikle korumak ve kayıptan kaçınmak.", value: 1 },
+      { label: "Enflasyonun üzerinde makul bir getiri ile sermayemi büyütmek.", value: 2 },
+      { label: "Kısa vadeli dalgalanmaları göze alarak maksimum getiriye ulaşmak.", value: 3 },
     ],
   },
   {
-    question: "Yatırımlarınızı ne kadar süre elinizde tutmayı planlıyorsunuz?",
+    question: "Bu yatırımdan elde edeceğiniz nakde ne zaman ihtiyaç duyacaksınız?",
     options: [
-      { label: "Kısa vadeli (1 yıldan az)", value: 1 },
-      { label: "Orta vadeli (1-3 yıl)", value: 2 },
-      { label: "Uzun vadeli (3 yıldan fazla)", value: 3 },
+      { label: "Çok yakında (0-1 yıl), her an bozdurabilirim.", value: 1 },
+      { label: "Orta vadede (1-3 yıl), örneğin ev/araba peşinatı için.", value: 2 },
+      { label: "Uzun vadede (3+ yıl), emeklilik veya gelecek planları için.", value: 3 },
     ],
   },
   {
-    question: "Piyasalarda ani bir %20 düşüş olsa tepkiniz ne olurdu?",
+    question: "Aşağıdaki yatırım senaryolarından hangisi sizi daha rahat hissettirir?",
     options: [
-      { label: "Hepsini satıp nakite geçerim", value: 1 },
-      { label: "Beklerim, piyasa toparlanır", value: 2 },
-      { label: "Fırsat bilip daha fazla alırım", value: 3 },
+      { label: "Düşük getiri olsun ama ana paramın azaldığını hiç görmeyeyim.", value: 1 },
+      { label: "Zaman zaman küçük düşüşler olabilir ama uzun vadede büyüsün.", value: 2 },
+      { label: "Büyük düşüşleri tolere edebilirim, yeter ki sonunda yüksek kazanç ihtimali olsun.", value: 3 },
     ],
   },
   {
-    question: "Yatırım deneyiminiz hangi seviyede?",
+    question: "Piyasalarda ani bir düşüş olsa ve portföyünüz %20 değer kaybetse tepkiniz ne olur?",
     options: [
-      { label: "Hiç yok / Çok az", value: 1 },
-      { label: "Temel bilgiye sahibim", value: 2 },
-      { label: "Deneyimli yatırımcıyım", value: 3 },
+      { label: "Çok endişelenirim ve daha fazla kaybetmemek için kalanını satarım.", value: 1 },
+      { label: "Endişelenirim ama panik yapmam, piyasanın toparlanmasını beklerim.", value: 2 },
+      { label: "Bunu bir alım fırsatı olarak görür, maliyet düşürmek için ekleme yaparım.", value: 3 },
     ],
   },
   {
-    question: "Hangi yatırım aracı size daha yakın geliyor?",
+    question: "Finansal piyasalar ve yatırım araçları hakkındaki bilgi seviyenizi nasıl tanımlarsınız?",
     options: [
-      { label: "Mevduat / Altın (Güvenli)", value: 1 },
-      { label: "Yatırım Fonları / Dengeli Portföy", value: 2 },
-      { label: "Hisse Senetleri / Kripto (Büyüme)", value: 3 },
+      { label: "Başlangıç seviyesindeyim, finansal terimler bana yabancı.", value: 1 },
+      { label: "Piyasa takibi yapıyorum, temel kavramlara ve risklere hakimim.", value: 2 },
+      { label: "Deneyimli bir yatırımcıyım, piyasa dinamiklerini aktif kullanırım.", value: 3 },
     ],
   },
   {
-    question: "Mevcut gelir kaynağınızın istikrarı nasıldır?",
+    question: "Yatırım için ayırdığınız paranın tamamını kaybetseniz, bu günlük yaşamınızı nasıl etkiler?",
     options: [
-      { label: "Değişken / Belirsiz", value: 1 },
-      { label: "Düzenli ama birikim zor", value: 2 },
-      { label: "Düzenli ve yüksek tasarruf potansiyeli var", value: 3 },
+      { label: "Çok kötü etkiler, yaşam standartımı sürdüremem.", value: 1 },
+      { label: "Üzülürüm ve planlarımı bir süre ertelemem gerekir ama hayatım devam eder.", value: 2 },
+      { label: "Günlük yaşantımı etkilemez, bu riski göze alarak ayırdığım bir tutar.", value: 3 },
     ],
   },
   {
-    question: "Beklediğiniz yıllık getiri oranı nedir?",
+    question: "Yıllık getiri beklentiniz, enflasyona kıyasla nasıldır?",
     options: [
-      { label: "%5 - %10 (Düşük risk)", value: 1 },
-      { label: "%10 - %20 (Orta risk)", value: 2 },
-      { label: "%20 ve üzeri (Yüksek risk)", value: 3 },
+      { label: "Enflasyon kadar olsun, paramın alım gücü erimesin yeter.", value: 1 },
+      { label: "Enflasyonun birkaç puan üzerinde reel bir getiri hedefliyorum.", value: 2 },
+      { label: "Enflasyonun çok üzerinde, piyasa ortalamasını yenen yüksek bir getiri istiyorum.", value: 3 },
     ],
   }
 ];

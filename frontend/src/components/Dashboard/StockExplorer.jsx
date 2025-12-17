@@ -21,6 +21,33 @@ export default function StockExplorer() {
   const [timeRange, setTimeRange] = useState("1mo");
   const [loadingDetail, setLoadingDetail] = useState(false);
 
+  const getCurrencyByAsset = (stock) => {
+    if (stock.type === "forex") {
+      if (stock.symbol.endsWith("TRY=X")) return "TRY";
+      if (stock.symbol.endsWith("USD=X")) return "USD";
+      if (stock.symbol.endsWith("JPY=X")) return "JPY";
+      if (stock.symbol.endsWith("CHF=X")) return "CHF";
+      if (stock.symbol.endsWith("CAD=X")) return "CAD";
+      return "USD";
+    }
+
+    if (stock.type === "crypto") {
+      return stock.symbol.endsWith("-USD") ? "USD" : "USD";
+    }
+
+    if (stock.type === "index") {
+      if (stock.symbol === "XU100.IS") return "TRY";
+      if (stock.symbol === "^GDAXI") return "EUR";
+      return "USD";
+    }
+
+    if (stock.type === "commodity") {
+      return "USD";
+    }
+
+    return "USD";
+  };
+
   useEffect(() => {
     const fetchStocks = async () => {
       try {
@@ -62,9 +89,24 @@ export default function StockExplorer() {
     fetchHistory();
   }, [selectedStock, timeRange]);
 
+  const getCurrencySymbolOverride = (currency) => {
+    if (currency === "CHF") return "Fr.";
+    return null;
+  };
 
-  const formatCurrency = (val) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+  const formatCurrency = (val, currency = "USD") => {
+    const overrideSymbol = getCurrencySymbolOverride(currency);
+
+    if (overrideSymbol) {
+      return `${overrideSymbol} ${val.toFixed(2)}`;
+    }
+
+    return new Intl.NumberFormat("tr-TR", {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+    }).format(val);
+  };
 
   const ranges = [
     { label: "1 Gün", value: "1d" },
@@ -81,7 +123,9 @@ export default function StockExplorer() {
             <ArrowLeft size={20} /> Geri Dön
           </button>
           <div className="detail-title-group">
-            <div className="stock-badge-large">{selectedStock.symbol}</div>
+            <h2 className="detail-stock-name">
+              {selectedStock.name}
+            </h2>
           </div>
         </div>
         <div className="detail-grid">
@@ -213,7 +257,12 @@ export default function StockExplorer() {
                 </div>
               </div>
               <div className="card-mid">
-                <span className="stock-price-list">{formatCurrency(stock.currentPrice)}</span>
+                <span className="stock-price-list">
+                  {formatCurrency(
+                    stock.currentPrice,
+                    getCurrencyByAsset(stock)
+                  )}
+                </span>
                 <span className="price-label">Güncel Fiyat</span>
               </div>
               <div className="card-btm">

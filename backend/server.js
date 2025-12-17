@@ -15,8 +15,7 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(cors({
-  origin: "*" // Temporarily allow all for deployment testing
-  // origin: ["http://localhost:5173", "https://your-frontend-app.onrender.com"] // Switch to this later
+  origin: "*"
 }));
 app.use(express.json());
 

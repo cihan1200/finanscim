@@ -192,7 +192,35 @@
 .wizard-actions {
   margin-top: 30px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between; /* ÖNEMLİ: Butonları iki uca iter */
+  align-items: center;
+}
+
+.back-button {
+  background-color: transparent;
+  color: #718096;
+  padding: 12px 24px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.back-button:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  color: #1a202c;
+}
+
+/* İlk soruda geri butonu disabled olduğu için onu gizleyelim ama yerini koruyalım */
+/* Böylece 'Sonraki' butonu hep sağda kalır */
+.back-button:disabled {
+  opacity: 0; 
+  cursor: default;
+  pointer-events: none;
 }
 
 .next-button {
@@ -460,5 +488,78 @@
 @media only screen and (max-width: 700px) {
   .score-summary-card {
     flex-direction: column;
+  }
+}
+
+/* --- Asset Type Selection Grid --- */
+
+.asset-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 Sütunlu yapı */
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.asset-type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 10px;
+  background-color: #fff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  min-height: 110px; /* Kartların eşit boyda durması için */
+}
+
+/* Hover Efekti */
+.asset-type-card:hover {
+  border-color: #cbd5e0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Seçili Durum (Selected State) */
+.asset-type-card.asset-type-selected {
+  border-color: #635bff;
+  background-color: #f0f5ff; /* Tema renginin çok açık tonu */
+  box-shadow: 0 0 0 1px rgba(99, 91, 255, 0.1);
+}
+
+.asset-icon {
+  margin-bottom: 10px;
+  color: #718096; /* Pasif ikon rengi */
+  transition: color 0.2s;
+}
+
+.asset-type-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a5568;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Seçiliyken İkon ve Yazı Rengi */
+.asset-type-selected .asset-icon {
+  color: #635bff;
+}
+
+.asset-type-selected .asset-type-label {
+  color: #5a4fcf;
+}
+
+/* Mobil Uyumluluk */
+@media only screen and (max-width: 600px) {
+  .asset-type-grid {
+    grid-template-columns: repeat(2, 1fr); /* Mobilde 2 sütuna düş */
+  }
+  
+  .asset-type-card {
+    padding: 15px;
+    min-height: 100px;
   }
 }
