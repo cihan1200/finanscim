@@ -76,7 +76,7 @@ export default function StockExplorer() {
     const fetchHistory = async () => {
       setLoadingDetail(true);
       try {
-        const res = await axios.get("http://localhost:5000/dashboard/get_stock_detail", {
+        const res = await axios.get(`${apiUrl}/dashboard/get_stock_detail`, {
           params: { symbol: selectedStock.symbol, range: timeRange }
         });
         setChartHistory(res.data);
