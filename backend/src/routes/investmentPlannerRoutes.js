@@ -57,50 +57,33 @@ const calculateAssetMetrics = async (info) => {
 
 const fetchMarketData = async (filterType = null) => {
   try {
-    const fetchMarketData = async (filterType = null) => {
-      try {
-        const query = {};
+    const query = {};
 
-        if (filterType && filterType !== "all") {
-          query.type = new RegExp(normalizeType(filterType), "i");
-        }
+    if (filterType && filterType !== "all") {
+      query.type = new RegExp(normalizeType(filterType), "i");
+    }
 
-        const stockDocs = await Stock.find(query).sort({ rank: 1 });
-
-        const poolToProcess = stockDocs.map(doc => ({
-          symbol: doc.symbol,
-          name: doc.name,
-          type: doc.type
-        }));
-
-        const results = await Promise.all(
-          poolToProcess.map(info => calculateAssetMetrics(info))
-        );
-
-        const validAssets = results.filter(a => a !== null && a.currentPrice > 0);
-
-        return validAssets;
-      } catch (error) {
-        console.error("Error fetching market data:", error);
-        return [];
-      }
-    };
     const stockDocs = await Stock.find(query).sort({ rank: 1 });
+
     const poolToProcess = stockDocs.map(doc => ({
       symbol: doc.symbol,
       name: doc.name,
       type: doc.type
     }));
+
     const results = await Promise.all(
       poolToProcess.map(info => calculateAssetMetrics(info))
     );
+
     const validAssets = results.filter(a => a !== null && a.currentPrice > 0);
+
     return validAssets;
   } catch (error) {
     console.error("Error fetching market data:", error);
     return [];
   }
 };
+
 
 router.post("/create_survey_question", async (req, res) => {
   try {
