@@ -6,7 +6,7 @@
   margin-bottom: 30px;
   box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
   position: relative;
-  font-family: "Stack Sans Text", sans-serif; /* Fixed Font */
+  font-family: "Stack Sans Text", sans-serif;
 }
 
 .expense-tracker-title {
@@ -21,7 +21,6 @@
   justify-content: space-between;
 }
 
-/* Empty State */
 .expense-empty-state {
   display: flex;
   flex-direction: column;
@@ -47,7 +46,6 @@
   gap: 15px;
 }
 
-/* --- List Items (Cards) --- */
 .expense-additional-group {
   display: flex;
   gap: 15px;
@@ -91,7 +89,6 @@
   font-weight: 600;
 }
 
-/* Modern Input Style */
 .expense-input-name input,
 .expense-input-value input {
   width: 100%;
@@ -114,7 +111,7 @@
   outline: none;
 }
 
-/* Remove Button - Fixed Alignment */
+
 .remove-expense-button {
   height: 42px;
   width: 42px;
@@ -123,15 +120,15 @@
   border: 1px solid #fed7d7;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 22px; /* Slightly larger X */
+  font-size: 22px;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.2s ease;
   flex-shrink: 0;
   margin-bottom: 1px;
-  padding: 0; /* Reset padding for perfect center */
-  line-height: 1; /* Reset line-height for perfect center */
+  padding: 0;
+  line-height: 1;
 }
 
 .remove-expense-button:hover {
@@ -141,7 +138,6 @@
   transform: rotate(90deg);
 }
 
-/* --- Action Buttons Area --- */
 .expense-tracker-buttons {
   display: flex;
   justify-content: flex-end;
@@ -200,7 +196,6 @@
   opacity: 0.7;
 }
 
-/* Total Section */
 .total-expenses {
   margin-top: 25px;
   background: #f7fafc;
@@ -220,7 +215,6 @@
   font-weight: 800;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -251,7 +245,6 @@
   overflow: hidden;
 }
 
-/* Popups z-index fix */
 .confirmation-popup-overlay, .success-popup-overlay {
   z-index: 9999;
 }

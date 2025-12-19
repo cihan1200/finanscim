@@ -5,7 +5,6 @@ import Stock from "../models/Stock.js";
 dotenvConfig();
 
 const companies = [
-  // STOCK
   { rank: 1, name: "NVIDIA", symbol: "NVDA", type: "stock" },
   { rank: 2, name: "Apple", symbol: "AAPL", type: "stock" },
   { rank: 3, name: "Microsoft", symbol: "MSFT", type: "stock" },

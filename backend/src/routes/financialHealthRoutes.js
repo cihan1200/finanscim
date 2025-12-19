@@ -5,7 +5,6 @@ import protect from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// --- HELPER FUNCTIONS ---
 const calculateTrendSlope = (values) => {
   if (values.length < 2) return 0;
   const n = values.length;
@@ -31,19 +30,15 @@ router.get("/analyze", protect, async (req, res) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonthIndex = currentDate.getMonth();
-
     const [balanceDoc, incomes] = await Promise.all([
       MonthlyBalance.findOne({ year: currentYear, user: userId }),
       Income.find({ year: currentYear, user: userId })
     ]);
-
     const monthNames = [
       "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
       "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
     ];
-
     let chartData = [];
-
     if (balanceDoc && balanceDoc.balances) {
       const dataToProcess = balanceDoc.balances.slice(0, currentMonthIndex + 1);
       chartData = dataToProcess.map((val, index) => ({
@@ -51,82 +46,63 @@ router.get("/analyze", protect, async (req, res) => {
         value: Number(val) || 0
       }));
     }
-
     const values = chartData.map(d => d.value);
-
     if (values.length === 0) {
       return res.json({
         status: "insufficient_data",
         recommendations: ["Analiz için yeterli finansal veri bulunamadı."]
       });
     }
-
     const totalYearlyIncome = incomes.reduce(
       (acc, curr) => acc + (curr.value || 0), 0
     );
-
     const uniqueIncomeMonths = new Set(incomes.map(item => item.month)).size;
     const incomeDivisor = uniqueIncomeMonths > 0 ? uniqueIncomeMonths : 1;
     const totalMonthlyIncome = totalYearlyIncome / incomeDivisor;
-
     const validBalances = values.filter(v => v !== 0);
     const avgNetBalance = validBalances.length
       ? validBalances.reduce((a, b) => a + b, 0) / validBalances.length
       : 0;
-
     const savingsRate = totalMonthlyIncome > 0
       ? avgNetBalance / totalMonthlyIncome
       : 0;
-
     const stdDev = calculateStdDev(values, avgNetBalance);
     const cv = avgNetBalance !== 0 ? Math.abs(stdDev / avgNetBalance) : 1;
     const slope = calculateTrendSlope(values);
-
     const positiveMonths = values.filter(v => v > 0).length;
     const reliabilityRatio = positiveMonths / values.length;
-
-    // -----------------------------
-    // SCORING
-    // -----------------------------
-
     let savingsScore = 0;
     if (savingsRate >= 0.5) savingsScore = 40;
     else if (savingsRate >= 0.3) savingsScore = 30;
     else if (savingsRate >= 0.1) savingsScore = 20;
     else if (savingsRate > 0) savingsScore = 10;
-
     let stabilityScore = 0;
     if (cv < 0.2) stabilityScore = 20;
     else if (cv < 0.5) stabilityScore = 15;
     else if (cv < 1.0) stabilityScore = 5;
-
     let trendScore = 0;
     if (slope > 50) trendScore = 20;
     else if (slope > -50) trendScore = 15;
     else trendScore = 5;
-
     let reliabilityScore = Math.round(reliabilityRatio * 20);
-
     const finalScore = Math.min(
       100,
       savingsScore + stabilityScore + trendScore + reliabilityScore
     );
 
-    // -----------------------------
-    // RECOMMENDATIONS (INSIDE ROUTE)
-    // -----------------------------
-
     const generateRecommendations = () => {
       const recs = [];
-
-      // Savings
       if (savingsRate > 1) {
         recs.push(
-          "Tasarruf oranınız %100'ün üzerinde görünüyor. Bu genellikle eksik veya hatalı gelir kayıtlarından kaynaklanır. Gelir verilerinizi kontrol etmeniz önerilir."
+          `Tasarruf oranınız %100'ün üzerinde görünüyor.
+          Bu genellikle eksik veya hatalı gelir kayıtlarından
+          kaynaklanır. Gelir verilerinizi kontrol etmeniz önerilir.`
         );
       } else if (savingsRate >= 0.5) {
         recs.push(
-          "Gelirinizin %50'sinden fazlasını tasarruf ediyorsunuz. Bu oldukça güçlü bir finansal disiplin göstergesidir. Uzun vadeli yatırım araçlarını değerlendirebilirsiniz."
+          `Gelirinizin %50'sinden fazlasını tasarruf ediyorsunuz.
+          Bu oldukça güçlü bir finansal disiplin göstergesidir.
+          Uzun vadeli yatırım araçlarını değerlendirebilirsiniz.`
         );
       } else if (savingsRate >= 0.3) {
         recs.push(
@@ -141,8 +117,6 @@ router.get("/analyze", protect, async (req, res) => {
           "Tasarruf oranınız oldukça düşük. Uzun vadeli finansal güvenlik için gider kontrolüne öncelik vermeniz önerilir."
         );
       }
-
-      // Stability
       if (cv > 1) {
         recs.push(
           "Aylık bakiyenizde çok yüksek dalgalanmalar var. Bu, düzensiz gelir veya kontrolsüz harcamalara işaret eder."
@@ -156,8 +130,6 @@ router.get("/analyze", protect, async (req, res) => {
           "Aylık bakiyeniz oldukça istikrarlı. Bütçe yönetimini başarılı şekilde yapıyorsunuz."
         );
       }
-
-      // Trend
       if (slope < -100) {
         recs.push(
           "Finansal trendiniz belirgin şekilde aşağı yönlü. Son aylarda giderleriniz gelirinizden daha hızlı artmış olabilir."
@@ -171,8 +143,6 @@ router.get("/analyze", protect, async (req, res) => {
           "Finansal trendiniz yükseliş yönünde. Doğru finansal kararlar alıyorsunuz."
         );
       }
-
-      // Reliability
       if (reliabilityRatio < 0.5) {
         recs.push(
           "Ayların büyük bölümünde harcamalar gelirleri aşmış. Daha sürdürülebilir bir bütçe yapısı oluşturmanız önerilir."
@@ -182,8 +152,6 @@ router.get("/analyze", protect, async (req, res) => {
           "Ayların büyük çoğunluğunda pozitif bakiye elde etmişsiniz. Bu güçlü bir finansal güvenilirlik göstergesidir."
         );
       }
-
-      // Overall
       if (finalScore >= 85) {
         recs.push(
           "Genel finansal sağlığınız çok güçlü. Bu performansı koruyarak uzun vadeli hedeflere odaklanabilirsiniz."
@@ -198,10 +166,6 @@ router.get("/analyze", protect, async (req, res) => {
     };
 
     const recommendations = generateRecommendations();
-
-    // -----------------------------
-    // CATEGORY
-    // -----------------------------
 
     let category = "Kritik";
     let categoryColor = "red";
@@ -237,6 +201,5 @@ router.get("/analyze", protect, async (req, res) => {
     res.status(500).json({ message: "Analiz sırasında bir hata oluştu." });
   }
 });
-
 
 export default router;

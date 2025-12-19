@@ -27,6 +27,13 @@ app.use("/expense", expenseRoutes);
 app.use("/api/monthly-balances", monthlyBalanceRoutes);
 app.use("/dashboard", investmentPlannerRoutes);
 app.use("/financial-health", financialHealthRoutes);
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Sayfa bulunamadı",
+    path: req.originalUrl
+  });
+});
 
 app.listen(PORT, () =>
   console.log(`Server running on port ${PORT}`)

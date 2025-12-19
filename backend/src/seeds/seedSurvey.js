@@ -4,12 +4,6 @@ import SurveyQuestion from "../models/surveyQuestion.js";
 
 dotenvConfig();
 
-/* Mantık:
-   Value 1: Muhafazakar (Düşük Risk / Koruma Odaklı)
-   Value 2: Dengeli (Orta Risk / Büyüme ve Koruma)
-   Value 3: Agresif (Yüksek Risk / Maksimum Getiri)
-*/
-
 const questions = [
   {
     question: "Yatırım yaparken sizin için en önemli öncelik hangisidir?",
@@ -72,15 +66,10 @@ const questions = [
 const seedSurvey = async () => {
   try {
     await connectDB();
-
-    // Clear existing questions
     await SurveyQuestion.deleteMany();
     console.log("🗑️  Old questions removed...");
-
-    // Insert new ones
     await SurveyQuestion.insertMany(questions);
     console.log("✅ Survey questions seeded successfully!");
-
     process.exit();
   } catch (error) {
     console.error("❌ Error seeding survey:", error);

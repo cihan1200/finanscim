@@ -16,8 +16,8 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   padding: 40px 50px;
   margin: 30px;
-  background-color: #ffffff; /* 1. Add white background */
-  position: relative;        /* 2. Setup for z-index */
+  background-color: #ffffff;
+  position: relative;
   z-index: 10;
 }
 
@@ -35,15 +35,15 @@
   padding: 15px;
   border-radius: 10px;
   border: 1px solid #e0e0e0;
-  transition: box-shadow 0.3s ease; /* transition applies to box-shadow */
-  outline: none; /* remove default outline */
-  width: 100%; /* Ensure it fills the new wrapper */
+  transition: box-shadow 0.3s ease;
+  outline: none;
+  width: 100%;
   box-sizing: border-box;
 }
 
 input[type="password"] {
-  font-weight: 500; /* Increases the "boldness" of the dots */
-  font-family: Verdana, sans-serif; /* Optional: Verdana is known for having large, clear dots */
+  font-weight: 500;
+  font-family: Verdana, sans-serif;
 }
 
 .password-input-wrapper {
@@ -54,28 +54,26 @@ input[type="password"] {
 }
 
 .password-input-wrapper input {
-  padding-right: 45px; /* Space for the eye icon */
+  padding-right: 45px;
 }
 
-/* 4. Style the toggle button */
 .password-toggle-icon {
   position: absolute;
-  right: 15px; /* Distance from the right edge */
+  right: 15px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
   display: flex;
   align-items: center;
-  color: #6b7280; /* Gray color for the icon */
+  color: #6b7280;
   transition: color 0.2s;
 }
 
 .password-toggle-icon:hover {
-  color: #1a1f36; /* Darker color on hover */
+  color: #1a1f36;
 }
 
-/* Size of the SVG icon */
 .password-toggle-icon svg {
   width: 20px;
   height: 20px;
@@ -89,7 +87,7 @@ input[type="password"] {
 }
 
 .form-group input:focus {
-  box-shadow: 0 0 0 3px rgba(1, 150, 237, 0.36); /* smooth animated focus */
+  box-shadow: 0 0 0 3px rgba(1, 150, 237, 0.36);
 }
 
 .password-label {
@@ -190,18 +188,15 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px; /* Space between logo and text */
+  gap: 10px;
   width: 100%;
   padding: 10px 20px;
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  
-  /* Text Styling */
   font-size: 15px;
   font-weight: 500;
-  color: rgb(60, 66, 87); /* Matches your label color */
-  
+  color: rgb(60, 66, 87);
   cursor: pointer;
   transition: all 0.2s ease;
   outline: none;
@@ -215,10 +210,9 @@ h1 {
 
 .google-sign-in-button:active {
   background-color: #f0f2f5;
-  transform: translateY(1px); /* Little click effect */
+  transform: translateY(1px);
 }
 
-/* Divider Styling */
 .divider {
   display: flex;
   align-items: center;
@@ -233,7 +227,7 @@ h1 {
 
 .divider-text {
   padding: 0 10px;
-  color: #6b7c93; /* Softer gray for the 'veya' */
+  color: #6b7c93;
   font-size: 13px;
   font-weight: 400;
 }
@@ -271,14 +265,13 @@ h1 {
 }
 
 .error-text {
-  color: #ff4d4f; /* Red warning color */
+  color: #ff4d4f;
   font-size: 13px;
   margin-top: 5px;
   font-weight: 500;
   display: block;
 }
 
-/* Ensure form groups don't jump around too much when errors appear */
 .form-group {
   margin-bottom: 5px; 
 }

@@ -1,4 +1,3 @@
-/* Container & Global Font */
 .investment-planner-container {
   background: #ffffff;
   border: 1px solid #edf2f7;
@@ -7,10 +6,9 @@
   margin-bottom: 30px;
   box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
   font-family: "Stack Sans Text", sans-serif;
-  min-height: 400px; /* Ensure height consistency */
+  min-height: 400px;
 }
 
-/* --- Header --- */
 .planner-header {
   display: flex;
   justify-content: space-between;
@@ -36,7 +34,6 @@
   font-weight: 600;
 }
 
-/* --- Intro Card --- */
 .intro-card {
   background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
   border-radius: 12px;
@@ -96,7 +93,6 @@
   box-shadow: 0 6px 15px rgba(99, 91, 255, 0.4);
 }
 
-/* --- Survey Wizard --- */
 .survey-wizard {
   max-width: 600px;
   margin: 0 auto;
@@ -162,7 +158,6 @@
   background-color: #f0f5ff;
 }
 
-/* Hide default radio */
 .option-card input {
   display: none;
 }
@@ -192,7 +187,7 @@
 .wizard-actions {
   margin-top: 30px;
   display: flex;
-  justify-content: space-between; /* ÖNEMLİ: Butonları iki uca iter */
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -215,8 +210,6 @@
   color: #1a202c;
 }
 
-/* İlk soruda geri butonu disabled olduğu için onu gizleyelim ama yerini koruyalım */
-/* Böylece 'Sonraki' butonu hep sağda kalır */
 .back-button:disabled {
   opacity: 0; 
   cursor: default;
@@ -247,8 +240,6 @@
   transform: translateX(2px);
 }
 
-
-/* --- Results View --- */
 .results-view {
   animation: fadeIn 0.4s ease-out;
 }
@@ -329,7 +320,6 @@
   font-weight: 700;
 }
 
-/* Stock Grid */
 .recommendations-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -452,7 +442,6 @@
   border-color: #a0aec0;
 }
 
-/* Animations */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -463,7 +452,6 @@
   to { opacity: 1; }
 }
 
-/* Loading Spinner */
 .loading-state {
   text-align: center;
   padding: 50px;
@@ -491,11 +479,9 @@
   }
 }
 
-/* --- Asset Type Selection Grid --- */
-
 .asset-type-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 Sütunlu yapı */
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
   width: 100%;
   margin-bottom: 30px;
@@ -512,26 +498,25 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  min-height: 110px; /* Kartların eşit boyda durması için */
+  min-height: 110px;
 }
 
-/* Hover Efekti */
+
 .asset-type-card:hover {
   border-color: #cbd5e0;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* Seçili Durum (Selected State) */
 .asset-type-card.asset-type-selected {
   border-color: #635bff;
-  background-color: #f0f5ff; /* Tema renginin çok açık tonu */
+  background-color: #f0f5ff;
   box-shadow: 0 0 0 1px rgba(99, 91, 255, 0.1);
 }
 
 .asset-icon {
   margin-bottom: 10px;
-  color: #718096; /* Pasif ikon rengi */
+  color: #718096;
   transition: color 0.2s;
 }
 
@@ -543,7 +528,6 @@
   line-height: 1.3;
 }
 
-/* Seçiliyken İkon ve Yazı Rengi */
 .asset-type-selected .asset-icon {
   color: #635bff;
 }
@@ -552,12 +536,11 @@
   color: #5a4fcf;
 }
 
-/* Mobil Uyumluluk */
 @media only screen and (max-width: 600px) {
   .asset-type-grid {
-    grid-template-columns: repeat(2, 1fr); /* Mobilde 2 sütuna düş */
+    grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .asset-type-card {
     padding: 15px;
     min-height: 100px;

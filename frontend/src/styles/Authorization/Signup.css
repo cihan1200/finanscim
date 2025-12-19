@@ -30,8 +30,8 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   padding: 40px 50px;
   margin: 30px;
-  background-color: #ffffff; /* 1. Add white background */
-  position: relative;        /* 2. Setup for z-index */
+  background-color: #ffffff;
+  position: relative;
   z-index: 10;
 }
 
@@ -104,13 +104,13 @@
     margin-left: 0px;
     margin-right: 0px;
     margin-top: 0px;
-    background-color: #ffffff; /* 1. Add white background */
-    position: relative;        /* 2. Setup for z-index */
+    background-color: #ffffff;
+    position: relative;
     z-index: 10;
   }
 
   .signup-gradient {
-    position: fixed; /* <--- Change this from absolute to fixed */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;

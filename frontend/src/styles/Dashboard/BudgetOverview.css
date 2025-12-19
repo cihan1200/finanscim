@@ -323,6 +323,7 @@
   padding-left: 0;
   cursor: default;
 }
+
 .month-input.read-only:focus {
   box-shadow: none;
 }

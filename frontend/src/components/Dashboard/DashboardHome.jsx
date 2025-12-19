@@ -23,7 +23,7 @@ export default function DashboardHome() {
 
   return (
     <>
-      <h1 className="home-title">Ana sayfa</h1>
+      <h1 className="home-title">Gelir & Gider takibi</h1>
       <IncomeTracker onTotalChange={handleIncomeChange} />
       <ExpenseTracker onTotalChange={handleExpenseChange} />
       <BudgetOverview

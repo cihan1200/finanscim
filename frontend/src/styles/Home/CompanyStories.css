@@ -1,9 +1,7 @@
-/* Component Container */
 .company-stories-container {
   padding: 100px 200px;
 }
 
-/* Company Stoires Header Container */
 .company-stories-header-container {
   display: flex;
   flex-direction: column;
@@ -52,8 +50,6 @@
   background-color: rgba(99, 91, 255, 0.8);
 }
 
-
-/* Company Stoires Carousel Statistics With Image Container */
 .company-stories-carousel-statistics-with-image-container {
   display: flex;
   align-items: center;
@@ -61,7 +57,6 @@
   justify-content: space-between;
 }
 
-/* Company Stoires Carousel Statistics Container */
 .company-stories-carousel-statistics-container {
   display: flex;
   flex-direction: column;
@@ -163,7 +158,6 @@
   width: 27px;
 }
 
-/* Company Stories Carousel Image Container */
 .company-stories-carousel-image-container {
   box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);;
   background-size: 115%;
@@ -215,8 +209,6 @@
   transform: translateY(15px);
 }
 
-
-/* Company Stories Carousel Companies Nav Container */
 .company-stories-carousel-companies-nav-container {
   display: flex;
   align-items: center;
@@ -243,8 +235,6 @@
   padding: 50px;
 }
 
-
-/* Hovers */
 .company-stories-carousel-image-container:hover 
 .company-stories-carousel-image-container-description {
   transform: translateY(-10px);
@@ -255,7 +245,6 @@
 }
 
 
-/* Animations */
 .slide-up-fade {
   animation: slideUpFade 0.5s ease forwards;
 }
@@ -295,8 +284,6 @@
   }
 }
 
-
-/* Responsivness */
 @media only screen and (max-width: 1100px) {
   .company-stories-container {
     padding: 100px 30px;

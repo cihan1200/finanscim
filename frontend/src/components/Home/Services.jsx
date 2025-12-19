@@ -9,6 +9,14 @@ import goalAnim from "../../animations/goal.json";
 export default function Services() {
   const services = [
     {
+      title: "Piyasa varlıklarını anlık olarak takip edin",
+      subTitle: "Piyasa Varlıkları Özeti",
+      description: `Piyasadaki varlıkların güncel değerlerini anlık olarak takip edin.
+      kısa vadeli, orta vadeli ve uzun vadeli fiyat değişimleri ile yatırım kararlarınızı
+      almada kolaylık sağlayın.`,
+      animation: integratedAnim
+    },
+    {
       title: "Gelir ve giderlerinizi tek bir yerden kolayca yönetin",
       subTitle: "Gelir & Gider Takibi",
       description: `Maaş ve ek gelirlerinizi kaydedin, aylık harcamalarınızı kategorize edin. 
@@ -17,27 +25,19 @@ export default function Services() {
       animation: budgetAnim
     },
     {
-      title: "Yıllık bütçe performansınızı grafiklerle analiz edin",
-      subTitle: "Bütçe Özeti & Grafikler",
-      description: `Gelir-gider dengenizi interaktif grafiklerle görselleştirin. Aylık net 
-      bakiyenizi takip edin, geçmiş dönemlerle karşılaştırmalar yapın ve finansal trendlerinizi 
-      anlık olarak görerek bütçenizi kontrol altına alın.`,
-      animation: integratedAnim
-    },
-    {
-      title: "Banka standartlarında finansal sağlık analizi",
-      subTitle: "Finansal Sağlık Radarı",
+      title: "Finansal sağlığınızı analiz edin",
+      subTitle: "Radar",
       description: `Tasarruf oranı, harcama istikrarı ve büyüme trendi gibi kritik metriklerle 
-      hesaplanan detaylı sağlık skorunuzu öğrenin. Yapay zeka destekli akıllı önerilerle 
-      finansal durumunuzu "Kritik" seviyesinden "Mükemmel" seviyesine taşıyın.`,
+      hesaplanan detaylı sağlık skorunuzu öğrenin. Finansal sağlık durumunuza göre elde ettiğiniz 
+      önerilerle finansal durumunuzu "Kritik" seviyesinden "Mükemmel" seviyesine taşıyın.`,
       animation: riskAnim
     },
     {
       title: "Risk profilinize uygun yatırım araçlarını keşfedin",
-      subTitle: "Yatırım Planlama & Piyasa Takibi",
-      description: `Risk toleransı anketi ile yatırımcı profilinizi belirleyin ve AHP algoritmasıyla 
-      size özel seçilen S&P 500 hisse önerilerini inceleyin. Canlı piyasa verileri, volatilite 
-      analizleri ve 90 günlük performans trendleri ile yatırımlarınıza yön verin.`,
+      subTitle: "Yatırım Planlama",
+      description: `Risk toleransı anketi ile yatırımcı profilinizi belirleyin ve istediğiniz türde
+      yatırım araçları arasından size özel seçilen yatırım önerilerini inceleyin. Canlı piyasa verileri,
+      risk analizleri ve orta vadeli performans trendlerini inceleyerek hedefinizi belirleyin.`,
       animation: goalAnim
     }
   ];

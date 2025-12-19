@@ -7,7 +7,6 @@ const router = express.Router();
 router.get("/:year", protect, async (req, res) => {
   try {
     const year = parseInt(req.params.year);
-
     let balanceDoc = await MonthlyBalance.findOne({
       user: req.user.id,
       year: year

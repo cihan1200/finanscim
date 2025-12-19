@@ -20,7 +20,7 @@
   align-items: center;
 }
 
-/* --- Empty State (New) --- */
+
 .income-empty-state {
   display: flex;
   flex-direction: column;
@@ -67,7 +67,6 @@
   transform: translateY(-1px);
 }
 
-/* --- List Items (Cards) --- */
 .income-additional-group {
   display: flex;
   gap: 15px;
@@ -111,7 +110,6 @@
   font-weight: 600;
 }
 
-/* Modern Input Style */
 .income-input-name input,
 .income-input-value input {
   width: 100%;
@@ -134,7 +132,6 @@
   outline: none;
 }
 
-/* Remove Button */
 .remove-income-button {
   height: 42px;
   width: 42px;
@@ -161,7 +158,6 @@
   transform: rotate(90deg);
 }
 
-/* --- Action Buttons --- */
 .income-tracker-buttons {
   display: flex;
   justify-content: flex-end;
@@ -220,7 +216,6 @@
   transform: translateY(-1px);
 }
 
-/* Total Section */
 .total-income {
   margin-top: 25px;
   background: #f7fafc;
@@ -240,7 +235,6 @@
   font-weight: 800;
 }
 
-/* Animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -271,7 +265,6 @@
   overflow: hidden;
 }
 
-/* --- Confirmation Pop-up Styles --- */
 .confirmation-popup-overlay {
   position: fixed;
   top: 0;
@@ -349,7 +342,6 @@
   box-shadow: 0 6px 12px rgba(229, 62, 62, 0.3);
 }
 
-/* --- Success Pop-up Styles --- */
 .success-popup-overlay {
   position: fixed;
   top: 0;

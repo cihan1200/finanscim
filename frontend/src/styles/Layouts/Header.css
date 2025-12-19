@@ -81,6 +81,7 @@
   gap: 15px;
   max-width: max-content;
   cursor: pointer;
+  user-select: none;
 }
 
 .features-menu > span:hover {
@@ -294,6 +295,21 @@
   color: #0a2540;
 }
 
+.mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  max-width: max-content;
+  font-size: 18px;
+  transition: all .2s ease;
+}
+
+.mobile-link:hover {
+  opacity: .8;
+}
+
 .mobile-menu-icons {
   color: #88add2;
   transition: all 0.2s ease;
@@ -320,12 +336,10 @@
   transform: translateX(100%);
 }
 
-/* Ensure the main menu content is hidden when features menu is open */
 .mobile-menu-links:has(.mobile-features-menu.open) > *:not(.mobile-features-menu) {
   display: none;
 }
 
-/* Optional: Add a subtle scale effect along with the slide */
 .mobile-features-menu {
   opacity: 0;
   transform: translateX(100%) scale(0.98);
@@ -394,6 +408,31 @@
   align-items: center;
   gap: 5px;
 }
+
+.toast-alert {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  background: #0a2540;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toast-alert.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
 
 
 @keyframes fadeIn {

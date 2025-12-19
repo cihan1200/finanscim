@@ -8,7 +8,6 @@ router.get("/", protect, async (req, res) => {
   try {
     const expenses = await Expense.find({ user: req.user.id })
       .sort({ createdAt: 1 });
-
     res.json(expenses);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -18,17 +17,14 @@ router.get("/", protect, async (req, res) => {
 router.post("/", protect, async (req, res) => {
   try {
     const { expenses } = req.body;
-
     const now = new Date();
     const month = now.getMonth();
     const year = now.getFullYear();
-
     await Expense.deleteMany({
       user: req.user.id,
       month,
       year
     });
-
     const docs = expenses.map(i => ({
       user: req.user.id,
       name: i.name,
@@ -36,7 +32,6 @@ router.post("/", protect, async (req, res) => {
       month,
       year
     }));
-
     const created = await Expense.insertMany(docs);
     res.status(201).json(created);
   } catch (error) {

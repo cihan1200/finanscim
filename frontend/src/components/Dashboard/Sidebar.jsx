@@ -14,13 +14,13 @@ export default function Sidebar() {
   };
 
   const basicsNavItems = [
-    { name: "Ana sayfa", icon: House, href: "/dashboard" },
+    { name: "Gelir & Gider takibi", icon: House, href: "/dashboard" },
     { name: "Yatırım planlama", icon: ChartColumnIncreasing, href: "/dashboard/investment_planner" },
     { name: "Radar", icon: Radar, href: "/dashboard/radar" },
-    { name: "Hisseler", icon: Telescope, href: "/dashboard/stock_explorer" }
+    { name: "Piyasa varlıkları özeti", icon: Telescope, href: "/dashboard/stock_explorer" }
   ];
   const panelNavItems = [
-    { name: `${user?.name} ${user?.lastName}`, icon: User, href: "/dashboard/user_info" },
+    { name: `${user?.name} ${user?.lastName}`, icon: User, href: "/dashboard" },
     {
       name: "Çıkış yap",
       icon: LogOut,

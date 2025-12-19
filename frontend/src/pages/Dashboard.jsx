@@ -6,7 +6,7 @@ export default function Dashboard() {
     <div className="dashboard-container">
       <Sidebar />
       <div className="dashboard-content">
-        <Outlet />   {/* nested pages render HERE */}
+        <Outlet />
       </div>
     </div>
   );
