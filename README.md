@@ -1,6 +1,6 @@
-# 📊 **Finanscım -- Kişisel Finans Yönetim Uygulaması**
+# 📊 **Finanscım - Kişisel Finans Yönetim Uygulaması**
 
-Finanscım, kullanıcıların gelir--gider takibini yapabildiği, bütçe
+Finanscım, kullanıcıların gelir & gider takibini yapabildiği, bütçe
 grafiklerini görüntüleyebildiği, yatırım önerileri alabildiği ve
 finansal sağlığını değerlendirebildiği **tam kapsamlı bir kişisel finans
 yönetim platformudur**.\
