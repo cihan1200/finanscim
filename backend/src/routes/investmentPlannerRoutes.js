@@ -3,6 +3,11 @@ import YahooFinance from "yahoo-finance2";
 import surveyQuestion from "../models/surveyQuestion.js";
 import Stock from "../models/Stock.js";
 
+const normalizeType = (t) => {
+  if (!t) return "";
+  return t.toLowerCase().replace(/[^a-z]/g, "");
+};
+
 const router = express.Router();
 
 const yahooFinance = new YahooFinance({
@@ -52,7 +57,34 @@ const calculateAssetMetrics = async (info) => {
 
 const fetchMarketData = async (filterType = null) => {
   try {
-    const query = (filterType && filterType !== 'all') ? { type: filterType } : {};
+    const fetchMarketData = async (filterType = null) => {
+      try {
+        const query = {};
+
+        if (filterType && filterType !== "all") {
+          query.type = new RegExp(normalizeType(filterType), "i");
+        }
+
+        const stockDocs = await Stock.find(query).sort({ rank: 1 });
+
+        const poolToProcess = stockDocs.map(doc => ({
+          symbol: doc.symbol,
+          name: doc.name,
+          type: doc.type
+        }));
+
+        const results = await Promise.all(
+          poolToProcess.map(info => calculateAssetMetrics(info))
+        );
+
+        const validAssets = results.filter(a => a !== null && a.currentPrice > 0);
+
+        return validAssets;
+      } catch (error) {
+        console.error("Error fetching market data:", error);
+        return [];
+      }
+    };
     const stockDocs = await Stock.find(query).sort({ rank: 1 });
     const poolToProcess = stockDocs.map(doc => ({
       symbol: doc.symbol,

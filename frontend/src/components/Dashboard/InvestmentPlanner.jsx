@@ -12,13 +12,12 @@ import {
   RefreshCw,
   ArrowRight,
   ArrowLeft,
-  // --- YENİ EKLENENLER ---
-  Globe,      // Tüm Piyasalar için
-  Building2,  // Hisseler (Şirketler) için
-  Bitcoin,    // Kripto için
-  Banknote,   // Döviz (Kağıt Para) için
-  Gem,        // Emtia (Değerli Maden) için
-  Activity    // Endeksler (Piyasa Nabzı) için
+  Globe,
+  Building2,
+  Bitcoin,
+  Banknote,
+  Gem,
+  Activity
 } from "lucide-react";
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -32,39 +31,39 @@ export default function InvestmentPlanner() {
   const [resultData, setResultData] = useState(null);
   const [recommendationData, setRecommendationData] = useState(null);
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
-
   const [selectedAssetType, setSelectedAssetType] = useState("all");
+  console.log(selectedAssetType);
 
   const assetTypes = [
     {
       value: "all",
       label: "Tüm Piyasalar",
-      icon: <Globe size={22} /> // Küresel piyasaları temsilen Dünya ikonu
+      icon: <Globe size={22} />
     },
     {
       value: "stock",
       label: "Hisse Senetleri",
-      icon: <Building2 size={22} /> // Şirketleri temsilen Bina ikonu
+      icon: <Building2 size={22} />
     },
     {
       value: "crypto",
       label: "Kripto Paralar",
-      icon: <Bitcoin size={22} /> // Doğrudan Bitcoin logosu
+      icon: <Bitcoin size={22} />
     },
     {
       value: "forex",
       label: "Döviz Çiftleri",
-      icon: <Banknote size={22} /> // Nakit parayı temsilen Banknot
+      icon: <Banknote size={22} />
     },
     {
       value: "commodity",
       label: "Emtialar",
-      icon: <Gem size={22} /> // Altın/Gümüş gibi değerli madenleri temsilen Mücevher
+      icon: <Gem size={22} />
     },
     {
       value: "index",
       label: "Borsa Endeksleri",
-      icon: <Activity size={22} /> // Piyasanın genel nabzını gösteren Aktivite/EKG çizgisi
+      icon: <Activity size={22} />
     }
   ];
 
@@ -215,8 +214,6 @@ export default function InvestmentPlanner() {
           </div>
         </div>
       )}
-
-      {/* ------------------------ SURVEY SECTION ------------------------ */}
       {isSurveyStarted && !isSurveyFinished && surveyQuestions.length > 0 && (
         <div className="survey-wizard">
           <div className="progress-bar-container">
@@ -225,7 +222,6 @@ export default function InvestmentPlanner() {
               style={{ width: `${((currentStep + 1) / surveyQuestions.length) * 100}%` }}
             ></div>
           </div>
-
           <div className="question-card">
             <span className="question-counter">
               Soru {currentStep + 1} / {surveyQuestions.length}
@@ -255,7 +251,6 @@ export default function InvestmentPlanner() {
                 </label>
               ))}
             </div>
-
             <div className="wizard-actions">
               <button
                 className="back-button"
@@ -264,7 +259,6 @@ export default function InvestmentPlanner() {
               >
                 <ArrowLeft size={16} /> Geri
               </button>
-
               <button
                 className="next-button"
                 disabled={!answers[currentStep]}
@@ -279,8 +273,6 @@ export default function InvestmentPlanner() {
           </div>
         </div>
       )}
-
-      {/* ------------------------ RESULTS ------------------------ */}
       {isSurveyFinished && (
         <div className="results-view">
           <div className="score-summary-card">
@@ -291,7 +283,6 @@ export default function InvestmentPlanner() {
                 <span className="score-total">/ 21</span>
               </div>
             </div>
-
             <div className="profile-info">
               <span className="profile-title">YATIRIMCI PROFİLİ</span>
               <h2 className="profile-name">
@@ -299,7 +290,6 @@ export default function InvestmentPlanner() {
               </h2>
             </div>
           </div>
-
           {!isLoadingRecommendations && recommendationData?.comment && (
             <div className="insight-card">
               <div className="insight-icon">
@@ -311,7 +301,6 @@ export default function InvestmentPlanner() {
               </div>
             </div>
           )}
-
           <h3 className="section-title">Sizin İçin Seçilen Hisseler</h3>
 
           {isLoadingRecommendations ? (
@@ -333,12 +322,10 @@ export default function InvestmentPlanner() {
                         </span>
                       </div>
                     </div>
-
                     <div className="stock-price">
                       {formatCurrency(asset.currentPrice, asset.symbol)}
                     </div>
                   </div>
-
                   <div className="stock-metrics">
                     <div className="metric-item">
                       <span className="metric-label">90 Günlük Değişim</span>
@@ -347,7 +334,6 @@ export default function InvestmentPlanner() {
                         {Math.abs(asset.change)}%
                       </span>
                     </div>
-
                     <div className="metric-item">
                       <span className="metric-label">Volatilite (Risk)</span>
                       <span className={`metric-badge ${getVolBadgeClass(asset.volatility)}`}>
@@ -359,7 +345,6 @@ export default function InvestmentPlanner() {
               ))}
             </div>
           )}
-
           {!isLoadingRecommendations && (
             <button
               className="reset-button"
