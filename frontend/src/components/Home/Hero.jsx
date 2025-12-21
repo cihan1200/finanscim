@@ -3,7 +3,6 @@ import Gradient from "../../utils/Gradient";
 import { useEffect, useRef, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import FinanscimLogo from "../../assests/finanscim-hero-logo.png";
 
 export default function Hero() {
   const gradientRef = useRef(null);
@@ -36,10 +35,6 @@ export default function Hero() {
           <h1 className="hero-title">
             Finansal<br />Geleceğinizi<br />Şekillendirin
           </h1>
-
-          <div className="hero-image-wrapper">
-            <img src={FinanscimLogo} className="hero-side-image" alt="hero logo" />
-          </div>
         </div>
       </div>
 

@@ -177,8 +177,6 @@ export default function InvestmentPlanner() {
           <span className="planner-subtitle">Portföy önerisi sunma aracı</span>
         )}
       </div>
-
-      {/* ------------------------ ASSET TYPE SELECTION ------------------------ */}
       {!isSurveyStarted && !isSurveyFinished && (
         <div className="intro-card">
           <div className="intro-content">

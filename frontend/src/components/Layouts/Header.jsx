@@ -1,6 +1,7 @@
 import "../../styles/Layouts/Header.css";
 import { ChevronDown, ChevronRight, ChevronLeft, ChartPie, Wallet, Radar, Menu, X, Telescope } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import FinanscimLogo from "../../assests/finanscim-hero-logo.png";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
@@ -91,7 +92,12 @@ export default function Header() {
   return (
     <>
       <header className="header-container">
-        <a className="brand" href="/">Finanscım</a>
+        <a className="brand" href="/">
+          Finanscım
+          <div className="hero-image-wrapper">
+            <img src={FinanscimLogo} className="hero-side-image" alt="hero logo" />
+          </div>
+        </a>
         {isMobile ? (
           <>
             <button className="mobile-menu-button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -100,7 +106,7 @@ export default function Header() {
             {mobileMenuOpen && (
               <div className={`mobile-menu-overlay ${isClosing ? 'closing' : ''}`}>
                 <div className="mobile-menu-heading">
-                  <a className="mobile-menu-brand" href="/">Finanscım</a>
+                  <a className="mobile-menu-brand" href="/">Finanscım  </a>
                   <X width="27px" height="27px" color="#0a2540" className="close-mobile-menu" onClick={closeMobileMenu} />
                 </div>
                 <nav className="mobile-menu-links">

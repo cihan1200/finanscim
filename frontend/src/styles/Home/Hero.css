@@ -106,31 +106,18 @@
   gap: 50px;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .hero-side-image {
-  width: 380px;
+  width: 50px;
   height: auto;
-  filter: drop-shadow(0px 8px 20px rgba(0, 0, 0, 0.15));
-  animation: fadeIn 0.8s ease forwards;
-  opacity: 0;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
-.hero-image-wrapper {
-  position: relative;
-}
-
-.hero-image-wrapper::after {
-  content: "";
-  position: absolute;
-  inset: -25px; /* blur genişliği */
-  background: url("../../assests/finanscim-hero-logo.png");
-  background-size: cover;
-  background-position: center;
-  filter: blur(25px);
-  opacity: 0.8;
-  z-index: -1;
-  border-radius: 20px;
-}
 
 @keyframes fadeIn {
   from {

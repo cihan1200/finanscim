@@ -122,7 +122,7 @@ export default function FinancialHealth() {
             </div>
             <div className="score-context">
               <h4>Genel Skor</h4>
-              <p>Bankacılık standartlarına göre hesaplanmıştır.</p>
+              <p>Aşağıdaki parametrelere göre hesaplanmıştır.</p>
             </div>
           </div>
           <div className="metrics-list">
