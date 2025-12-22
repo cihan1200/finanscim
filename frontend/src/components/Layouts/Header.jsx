@@ -1,7 +1,7 @@
 import "../../styles/Layouts/Header.css";
 import { ChevronDown, ChevronRight, ChevronLeft, ChartPie, Wallet, Radar, Menu, X, Telescope } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import FinanscimLogo from "../../assests/finanscim-hero-logo.png";
+
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
@@ -94,9 +94,6 @@ export default function Header() {
       <header className="header-container">
         <a className="brand" href="/">
           Finanscım
-          <div className="hero-image-wrapper">
-            <img src={FinanscimLogo} className="hero-side-image" alt="hero logo" />
-          </div>
         </a>
         {isMobile ? (
           <>
