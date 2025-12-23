@@ -84,7 +84,7 @@ router.get("/analyze", protect, async (req, res) => {
       value: val
     }));
 
-    /* 1. TREND SKORU (Yön Analizi) */
+    /* 1. TREND SKORU */
     const slope = calculateTrendSlope(values);
     let trendScore = 0;
     if (slope > 100) trendScore = 20;
@@ -92,18 +92,29 @@ router.get("/analyze", protect, async (req, res) => {
     else if (slope > -50) trendScore = 5;
     else trendScore = 2;
 
-    /* 2. TASARRUF / BÜYÜME HIZI SKORU */
+    /* 2. TASARRUF / BÜYÜME HIZI HESABI (DÜZENLENMİŞ) */
     const rates = [];
     for (let i = 1; i < values.length; i++) {
-      const prev = values[i - 1] === 0 ? 1 : Math.abs(values[i - 1]);
-      rates.push((values[i] - values[i - 1]) / prev);
+      const prev = values[i - 1];
+
+      // Önceki ay 0 ise sonsuz büyüme çıkmaması için %100 (1.0) kabul ediyoruz
+      if (prev === 0) {
+        rates.push(values[i] > 0 ? 1.0 : 0);
+      } else {
+        rates.push((values[i] - prev) / Math.abs(prev));
+      }
     }
 
-    // Zikzak etkisini kırmak için: Eğer genel trend (slope) 0 veya altındaysa hızı cezalandır
     let avgGrowthRate = rates.length > 0 ? (rates.reduce((a, b) => a + b, 0) / rates.length) : 0;
+
+    // Negatif trend varsa büyüme oranını cezalandır
     if (slope <= 0 && avgGrowthRate > 0) {
-      avgGrowthRate = avgGrowthRate * 0.2; // Trend aşağıysa yalancı büyümeyi %80 baskıla
+      avgGrowthRate = avgGrowthRate * 0.2;
     }
+
+    // TASARRUF ORANI SINIRLANDIRMA: %100'den (1.0) büyükse 1.0 yap, 
+    // böylece UI'da en fazla %100.0 görünür.
+    const constrainedRate = Math.min(1.0, Math.max(-1.0, avgGrowthRate));
 
     let savingsScore = 0;
     if (avgGrowthRate >= 0.15) savingsScore = 40;
@@ -121,10 +132,8 @@ router.get("/analyze", protect, async (req, res) => {
     /* FİNAL SKOR */
     const finalScore = Math.min(100, savingsScore + stabilityScore + trendScore + reliabilityScore);
 
-    /* ÖNERİLER (Zeki Filtreleme) */
+    /* ÖNERİLER */
     const recommendations = [];
-
-    // "Hızlı büyüme" önerisi sadece hem hız hem yön pozitifse verilir
     if (avgGrowthRate >= 0.10 && slope > 10) {
       recommendations.push("Varlıklarınız kararlı ve hızlı bir şekilde büyüyor. Yatırım çeşitliliği düşünebilirsiniz.");
     } else if (slope > 0) {
@@ -151,7 +160,8 @@ router.get("/analyze", protect, async (req, res) => {
       categoryColor,
       chartData,
       metrics: {
-        savingsRate: (avgGrowthRate * 100).toFixed(1),
+        // constrainedRate kullanarak %100.0 sınırını uyguluyoruz
+        savingsRate: (constrainedRate * 100).toFixed(1),
         savingsScore,
         stabilityScore,
         trendScore,
