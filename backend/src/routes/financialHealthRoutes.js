@@ -28,26 +28,21 @@ const calculateStabilityScore = (values) => {
 
   const growthRates = [];
   for (let i = 1; i < values.length; i++) {
-    // 0'a bölünmeyi engellemek için küçük bir tolerans (epsilon)
     const prevValue = values[i - 1] === 0 ? 1 : Math.abs(values[i - 1]);
     const rate = (values[i] - values[i - 1]) / prevValue;
     growthRates.push(rate);
   }
 
   const avgRate = growthRates.reduce((a, b) => a + b, 0) / growthRates.length;
-
-  // Büyüme oranlarının standart sapması (Varyasyon analizi)
   const variance = growthRates.reduce((acc, val) => acc + Math.pow(val - avgRate, 2), 0) / growthRates.length;
   const stdDev = Math.sqrt(variance);
 
-  // Standart sapma düşükse (örneğin büyüme hep %20 civarıysa) puan artar
   let stabilityScore = 0;
   if (stdDev < 0.25) stabilityScore = 20;
   else if (stdDev < 0.6) stabilityScore = 15;
   else if (stdDev < 1.2) stabilityScore = 10;
   else stabilityScore = 5;
 
-  // Eğer bakiye genel olarak azalma eğilimindeyse istikrar puanını yarıya düşür
   if (avgRate < 0) stabilityScore = Math.floor(stabilityScore * 0.5);
 
   return stabilityScore;
@@ -80,7 +75,6 @@ router.get("/analyze", protect, async (req, res) => {
       });
     }
 
-    // Mevcut aya kadar olan verileri filtrele ve numaraya çevir
     const values = balanceDoc.balances
       .slice(0, currentMonthIndex + 1)
       .map(v => Number(v) || 0);
@@ -90,24 +84,7 @@ router.get("/analyze", protect, async (req, res) => {
       value: val
     }));
 
-    /* 1. TASARRUF / BÜYÜME HIZI SKORU */
-    const rates = [];
-    for (let i = 1; i < values.length; i++) {
-      const prev = values[i - 1] === 0 ? 1 : Math.abs(values[i - 1]);
-      rates.push((values[i] - values[i - 1]) / prev);
-    }
-    const avgGrowthRate = rates.length > 0 ? (rates.reduce((a, b) => a + b, 0) / rates.length) : 0;
-
-    let savingsScore = 0;
-    if (avgGrowthRate >= 0.15) savingsScore = 40;      // Ortalama aylık %15+ büyüme
-    else if (avgGrowthRate >= 0.08) savingsScore = 30; // Ortalama aylık %8+ büyüme
-    else if (avgGrowthRate >= 0.03) savingsScore = 20; // Ortalama aylık %3+ büyüme
-    else if (avgGrowthRate > 0) savingsScore = 10;     // Pozitif ama yavaş büyüme
-
-    /* 2. İSTİKRAR SKORU */
-    const stabilityScore = calculateStabilityScore(values);
-
-    /* 3. TREND SKORU */
+    /* 1. TREND SKORU (Yön Analizi) */
     const slope = calculateTrendSlope(values);
     let trendScore = 0;
     if (slope > 100) trendScore = 20;
@@ -115,22 +92,50 @@ router.get("/analyze", protect, async (req, res) => {
     else if (slope > -50) trendScore = 5;
     else trendScore = 2;
 
-    /* 4. GÜVENİLİRLİK SKORU (Pozitif Ay Oranı) */
-    const positiveMonths = values.filter(v => v > 0).length;
-    const reliabilityRatio = positiveMonths / values.length;
-    const reliabilityScore = Math.round(reliabilityRatio * 20);
+    /* 2. TASARRUF / BÜYÜME HIZI SKORU */
+    const rates = [];
+    for (let i = 1; i < values.length; i++) {
+      const prev = values[i - 1] === 0 ? 1 : Math.abs(values[i - 1]);
+      rates.push((values[i] - values[i - 1]) / prev);
+    }
 
-    /* FİNAL SKOR HESAPLAMA */
+    // Zikzak etkisini kırmak için: Eğer genel trend (slope) 0 veya altındaysa hızı cezalandır
+    let avgGrowthRate = rates.length > 0 ? (rates.reduce((a, b) => a + b, 0) / rates.length) : 0;
+    if (slope <= 0 && avgGrowthRate > 0) {
+      avgGrowthRate = avgGrowthRate * 0.2; // Trend aşağıysa yalancı büyümeyi %80 baskıla
+    }
+
+    let savingsScore = 0;
+    if (avgGrowthRate >= 0.15) savingsScore = 40;
+    else if (avgGrowthRate >= 0.08) savingsScore = 30;
+    else if (avgGrowthRate >= 0.03) savingsScore = 20;
+    else if (avgGrowthRate > 0) savingsScore = 10;
+
+    /* 3. İSTİKRAR SKORU */
+    const stabilityScore = calculateStabilityScore(values);
+
+    /* 4. GÜVENİLİRLİK SKORU */
+    const positiveMonths = values.filter(v => v > 0).length;
+    const reliabilityScore = Math.round((positiveMonths / values.length) * 20);
+
+    /* FİNAL SKOR */
     const finalScore = Math.min(100, savingsScore + stabilityScore + trendScore + reliabilityScore);
 
-    /* ÖNERİLER */
+    /* ÖNERİLER (Zeki Filtreleme) */
     const recommendations = [];
-    if (avgGrowthRate >= 0.10) recommendations.push("Varlıklarınız hızla büyüyor, yatırım çeşitliliğini artırmayı düşünebilirsiniz.");
-    else if (avgGrowthRate > 0) recommendations.push("Büyüme hızınız pozitif ancak tasarruf oranınızı artırarak ivme kazanabilirsiniz.");
-    else recommendations.push("Bakiyenizde azalma veya duraklama var. Harcamalarınızı kontrol etmeniz önerilir.");
 
-    if (stabilityScore >= 15) recommendations.push("Düzenli bütçe yönetiminiz finansal güvenliğinizi destekliyor.");
-    else recommendations.push("Aylık bakiyenizdeki düzensiz değişimler uzun vadeli planlamayı zorlaştırabilir.");
+    // "Hızlı büyüme" önerisi sadece hem hız hem yön pozitifse verilir
+    if (avgGrowthRate >= 0.10 && slope > 10) {
+      recommendations.push("Varlıklarınız kararlı ve hızlı bir şekilde büyüyor. Yatırım çeşitliliği düşünebilirsiniz.");
+    } else if (slope > 0) {
+      recommendations.push("Büyüme trendiniz pozitif ancak daha hızlı birikim için harcama disiplini gerekebilir.");
+    } else {
+      recommendations.push("Net bakiyenizde bir artış görülmüyor. Dalgalanmaları azaltmak için bütçe planlaması yapmalısınız.");
+    }
+
+    if (stabilityScore < 10) {
+      recommendations.push("Bakiyenizdeki sert iniş çıkışlar finansal risk oluşturuyor.");
+    }
 
     if (finalScore >= 80) recommendations.push("Finansal sağlığınız mükemmel durumda.");
 
