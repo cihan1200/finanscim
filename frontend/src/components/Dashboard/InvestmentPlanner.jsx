@@ -32,7 +32,6 @@ export default function InvestmentPlanner() {
   const [recommendationData, setRecommendationData] = useState(null);
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
   const [selectedAssetType, setSelectedAssetType] = useState("all");
-  console.log(selectedAssetType);
 
   const assetTypes = [
     {
