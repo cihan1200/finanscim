@@ -92,12 +92,10 @@ router.get("/analyze", protect, async (req, res) => {
     else if (slope > -50) trendScore = 5;
     else trendScore = 2;
 
-    /* 2. TASARRUF / BÜYÜME HIZI HESABI (DÜZENLENMİŞ) */
+    /* 2. TASARRUF / BÜYÜME HIZI HESABI */
     const rates = [];
     for (let i = 1; i < values.length; i++) {
       const prev = values[i - 1];
-
-      // Önceki ay 0 ise sonsuz büyüme çıkmaması için %100 (1.0) kabul ediyoruz
       if (prev === 0) {
         rates.push(values[i] > 0 ? 1.0 : 0);
       } else {
@@ -107,13 +105,10 @@ router.get("/analyze", protect, async (req, res) => {
 
     let avgGrowthRate = rates.length > 0 ? (rates.reduce((a, b) => a + b, 0) / rates.length) : 0;
 
-    // Negatif trend varsa büyüme oranını cezalandır
     if (slope <= 0 && avgGrowthRate > 0) {
       avgGrowthRate = avgGrowthRate * 0.2;
     }
 
-    // TASARRUF ORANI SINIRLANDIRMA: %100'den (1.0) büyükse 1.0 yap, 
-    // böylece UI'da en fazla %100.0 görünür.
     const constrainedRate = Math.min(1.0, Math.max(-1.0, avgGrowthRate));
 
     let savingsScore = 0;
@@ -160,7 +155,6 @@ router.get("/analyze", protect, async (req, res) => {
       categoryColor,
       chartData,
       metrics: {
-        // constrainedRate kullanarak %100.0 sınırını uyguluyoruz
         savingsRate: (constrainedRate * 100).toFixed(1),
         savingsScore,
         stabilityScore,
